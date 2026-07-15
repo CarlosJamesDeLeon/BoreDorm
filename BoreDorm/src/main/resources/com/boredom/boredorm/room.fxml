@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.boredom.boredorm.RoomControl.RoomController"
+            prefWidth="1024" prefHeight="768"
+            style="-fx-background-color: #F5F1E6;">
+    <children>
+        <!-- Sidebar Background -->
+        <Pane layoutX="0" layoutY="0" prefWidth="200" prefHeight="768"
+              style="-fx-background-color: #1E2B22;"/>
+        <Label fx:id="sidebarTitle" text="BoreDorm" layoutX="20" layoutY="20"
+               style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #F5F1E6;"/>
+        <Button fx:id="navDashboard" text="Dashboard" layoutX="10" layoutY="65" prefWidth="180"
+                onAction="#handleNavDashboard"
+                style="-fx-background-color: transparent; -fx-text-fill: #D8D2C0; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-border-width: 0; -fx-cursor: hand;"/>
+        <Button fx:id="navTenants" text="Tenants" layoutX="10" layoutY="105" prefWidth="180"
+                onAction="#handleNavTenants"
+                style="-fx-background-color: transparent; -fx-text-fill: #D8D2C0; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-border-width: 0; -fx-cursor: hand;"/>
+        <Button fx:id="navRooms" text="Rooms" layoutX="10" layoutY="145" prefWidth="180"
+                onAction="#handleNavRooms"
+                style="-fx-background-color: #C89B3C; -fx-text-fill: #1E2B22; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-border-width: 0; -fx-cursor: hand;"/>
+        <Button fx:id="navBilling" text="Billing" layoutX="10" layoutY="185" prefWidth="180"
+                onAction="#handleNavBilling"
+                style="-fx-background-color: transparent; -fx-text-fill: #D8D2C0; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-border-width: 0; -fx-cursor: hand;"/>
+        <Button fx:id="navMaintenance" text="Maintenance" layoutX="10" layoutY="225" prefWidth="180"
+                onAction="#handleNavMaintenance"
+                style="-fx-background-color: transparent; -fx-text-fill: #D8D2C0; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-border-width: 0; -fx-cursor: hand;"/>
+        <Button fx:id="btnSignOut" text="Sign Out" layoutX="10" layoutY="700" prefWidth="180"
+                onAction="#handleSignOut"
+                style="-fx-background-color: transparent; -fx-text-fill: #A8452F; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-border-width: 0; -fx-cursor: hand;"/>
+        <Separator orientation="VERTICAL" layoutX="200" layoutY="0" prefHeight="768"/>
+
+        <!-- Left Panel: Room Grids -->
+        <Label fx:id="pageTitle" text="Rooms &amp; Occupancy" layoutX="220" layoutY="20"
+               style="-fx-font-size: 26; -fx-font-weight: bold; -fx-text-fill: #20241E;"/>
+        <Label fx:id="floor1Label" text="First Floor" layoutX="220" layoutY="68"
+               style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #20241E;"/>
+        <FlowPane fx:id="floor1Grid" layoutX="220" layoutY="93" prefWidth="435" prefHeight="160"
+                  hgap="12" vgap="12"/>
+        <Label fx:id="floor2Label" text="Second Floor" layoutX="220" layoutY="268"
+               style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #20241E;"/>
+        <FlowPane fx:id="floor2Grid" layoutX="220" layoutY="293" prefWidth="435" prefHeight="160"
+                  hgap="12" vgap="12"/>
+        <Separator orientation="VERTICAL" layoutX="665" layoutY="0" prefHeight="768"/>
+
+        <!-- Right Panel: Room Details -->
+        <Label fx:id="detailsHeader" text="Room Profile" layoutX="680" layoutY="20"
+               style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #20241E;"/>
+        <Label fx:id="detailsRoomTag" text="R101" layoutX="680" layoutY="60"
+               style="-fx-font-size: 13; -fx-font-weight: bold; -fx-background-color: #C89B3C; -fx-text-fill: #F5F1E6; -fx-padding: 4 10; -fx-background-radius: 6;"/>
+        <Label fx:id="detailsStatus" text="Occupied" layoutX="745" layoutY="63"
+               style="-fx-font-size: 12; -fx-text-fill: #20241E; -fx-padding: 4 8;"/>
+        <Label fx:id="lblRoomType" text="Room Type" layoutX="680" layoutY="103"
+               style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #20241E;"/>
+        <TextField fx:id="editType" layoutX="680" layoutY="123" prefWidth="325"
+                   style="-fx-background-color: #F5F1E6; -fx-border-color: #D8D2C0; -fx-border-width: 1; -fx-padding: 8;"/>
+        <Label fx:id="lblCapacity" text="Capacity" layoutX="680" layoutY="168"
+               style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #20241E;"/>
+        <TextField fx:id="editCapacity" layoutX="680" layoutY="188" prefWidth="325"
+                   style="-fx-background-color: #F5F1E6; -fx-border-color: #D8D2C0; -fx-border-width: 1; -fx-padding: 8;"/>
+        <Label fx:id="lblRate" text="Monthly Rate" layoutX="680" layoutY="233"
+               style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #20241E;"/>
+        <TextField fx:id="editRate" layoutX="680" layoutY="253" prefWidth="325"
+                   style="-fx-background-color: #F5F1E6; -fx-border-color: #D8D2C0; -fx-border-width: 1; -fx-padding: 8;"/>
+        <Label fx:id="lblRoomStatus" text="Status" layoutX="680" layoutY="298"
+               style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #20241E;"/>
+        <ComboBox fx:id="comboStatus" layoutX="680" layoutY="318" prefWidth="325"
+                  style="-fx-background-color: #F5F1E6; -fx-border-color: #D8D2C0; -fx-border-width: 1;"/>
+        <Button fx:id="btnSave" text="Save Configuration" onAction="#handleSaveRoom"
+                layoutX="680" layoutY="370" prefWidth="325"
+                style="-fx-background-color: #C89B3C; -fx-text-fill: #F5F1E6; -fx-background-radius: 0; -fx-border-width: 0; -fx-padding: 10 20; -fx-cursor: hand; -fx-font-size: 13;"/>
+    </children>
+</AnchorPane>

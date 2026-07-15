@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.boredom.boredorm.LoginControl.LoginController"
+            prefWidth="800" prefHeight="600"
+            style="-fx-background-color: #1E2B22;">
+    <children>
+        <VBox layoutX="220" layoutY="115" prefWidth="360" spacing="12"
+              style="-fx-background-color: #F5F1E6; -fx-padding: 30; -fx-border-color: #D8D2C0; -fx-border-width: 1;">
+            <children>
+                <Label fx:id="titleLabel" text="BoreDorm Sign In"
+                       style="-fx-font-size: 22; -fx-font-weight: bold; -fx-text-fill: #20241E;"/>
+                <Label text="Username"
+                       style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #20241E;"/>
+                <TextField fx:id="usernameField"
+                           style="-fx-background-color: #F5F1E6; -fx-border-color: #D8D2C0; -fx-border-width: 1; -fx-padding: 8; -fx-text-fill: #20241E;"/>
+                <Label text="Password"
+                       style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #20241E;"/>
+                <PasswordField fx:id="passwordField"
+                               style="-fx-background-color: #F5F1E6; -fx-border-color: #D8D2C0; -fx-border-width: 1; -fx-padding: 8; -fx-text-fill: #20241E;"/>
+                <Button fx:id="signInButton" text="Sign In" onAction="#handleLogin" maxWidth="Infinity"
+                        style="-fx-background-color: #C89B3C; -fx-text-fill: #F5F1E6; -fx-background-radius: 0; -fx-border-width: 0; -fx-padding: 10 20; -fx-cursor: hand; -fx-font-size: 13;"/>
+                <Label fx:id="errorLabel" visible="false"
+                       style="-fx-text-fill: #A8452F; -fx-font-size: 12;"/>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
