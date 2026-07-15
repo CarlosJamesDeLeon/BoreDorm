@@ -1,5 +1,6 @@
 package com.boredom.boredorm.MaintenanceControl;
 
+import com.boredom.boredorm.NavigationUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -31,13 +32,55 @@ public class MaintenanceController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        sidebar.setId("sidebar");
+        sidebarTitle.setId("sidebarTitle");
+        navDashboard.setId("navDashboard");
+        navTenants.setId("navTenants");
+        navRooms.setId("navRooms");
+        navBilling.setId("navBilling");
+        navMaintenance.setId("navMaintenance");
+        btnSignOut.setId("btnSignOut");
+        contentArea.setId("contentArea");
+        pageTitle.setId("pageTitle");
+        searchField.setId("searchField");
+        comboFilterStatus.setId("comboFilterStatus");
+        maintenanceTable.setId("maintenanceTable");
+        colTenant.setId("colTenant");
+        colRoom.setId("colRoom");
+        colDescription.setId("colDescription");
+        colDateFiled.setId("colDateFiled");
+        colStatus.setId("colStatus");
+        colStaff.setId("colStaff");
         comboFilterStatus.getItems().addAll("New", "In Progress", "Resolved");
     }
 
-    @FXML private void handleNavDashboard(ActionEvent event) { com.boredom.boredorm.NavigationUtil.navigateTo(event, "/com/boredom/boredorm/dashboard.fxml"); }
-    @FXML private void handleNavTenants(ActionEvent event) { com.boredom.boredorm.NavigationUtil.navigateTo(event, "/com/boredom/boredorm/tenant.fxml"); }
-    @FXML private void handleNavRooms(ActionEvent event) { com.boredom.boredorm.NavigationUtil.navigateTo(event, "/com/boredom/boredorm/room.fxml"); }
-    @FXML private void handleNavBilling(ActionEvent event) { com.boredom.boredorm.NavigationUtil.navigateTo(event, "/com/boredom/boredorm/billing.fxml"); }
-    @FXML private void handleNavMaintenance(ActionEvent event) { com.boredom.boredorm.NavigationUtil.navigateTo(event, "/com/boredom/boredorm/maintenanceRequests.fxml"); }
-    @FXML private void handleSignOut(ActionEvent event) { com.boredom.boredorm.NavigationUtil.navigateTo(event, "/com/boredom/boredorm/login.fxml"); }
+    @FXML
+    private void handleNavDashboard(ActionEvent event) {
+        NavigationUtil.navigateTo(event, "/com/boredom/boredorm/dashboard.fxml");
+    }
+
+    @FXML
+    private void handleNavTenants(ActionEvent event) {
+        NavigationUtil.navigateTo(event, "/com/boredom/boredorm/tenant.fxml");
+    }
+
+    @FXML
+    private void handleNavRooms(ActionEvent event) {
+        NavigationUtil.navigateTo(event, "/com/boredom/boredorm/room.fxml");
+    }
+
+    @FXML
+    private void handleNavBilling(ActionEvent event) {
+        NavigationUtil.navigateTo(event, "/com/boredom/boredorm/billing.fxml");
+    }
+
+    @FXML
+    private void handleNavMaintenance(ActionEvent event) {
+        NavigationUtil.navigateTo(event, "/com/boredom/boredorm/maintenanceRequests.fxml");
+    }
+
+    @FXML
+    private void handleSignOut(ActionEvent event) {
+        NavigationUtil.navigateTo(event, "/com/boredom/boredorm/login.fxml");
+    }
 }

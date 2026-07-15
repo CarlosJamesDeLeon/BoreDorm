@@ -1,93 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<AnchorPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.boredom.boredorm.DashboardControl.DashboardController"
-            prefWidth="1024" prefHeight="768"
-            style="-fx-background-color: #F5F1E6;">
-    <children>
-        <!-- Sidebar Background -->
-        <Pane layoutX="0" layoutY="0" prefWidth="200" prefHeight="768"
-              style="-fx-background-color: #1E2B22;"/>
-        <Label fx:id="sidebarTitle" text="BoreDorm" layoutX="20" layoutY="20"
-               style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #F5F1E6;"/>
-        <Button fx:id="navDashboard" text="Dashboard" layoutX="10" layoutY="65" prefWidth="180"
-                onAction="#handleNavDashboard"
-                style="-fx-background-color: #C89B3C; -fx-text-fill: #1E2B22; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-border-width: 0; -fx-cursor: hand;"/>
-        <Button fx:id="navTenants" text="Tenants" layoutX="10" layoutY="105" prefWidth="180"
-                onAction="#handleNavTenants"
-                style="-fx-background-color: transparent; -fx-text-fill: #D8D2C0; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-border-width: 0; -fx-cursor: hand;"/>
-        <Button fx:id="navRooms" text="Rooms" layoutX="10" layoutY="145" prefWidth="180"
-                onAction="#handleNavRooms"
-                style="-fx-background-color: transparent; -fx-text-fill: #D8D2C0; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-border-width: 0; -fx-cursor: hand;"/>
-        <Button fx:id="navBilling" text="Billing" layoutX="10" layoutY="185" prefWidth="180"
-                onAction="#handleNavBilling"
-                style="-fx-background-color: transparent; -fx-text-fill: #D8D2C0; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-border-width: 0; -fx-cursor: hand;"/>
-        <Button fx:id="navMaintenance" text="Maintenance" layoutX="10" layoutY="225" prefWidth="180"
-                onAction="#handleNavMaintenance"
-                style="-fx-background-color: transparent; -fx-text-fill: #D8D2C0; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-border-width: 0; -fx-cursor: hand;"/>
-        <Button fx:id="btnSignOut" text="Sign Out" layoutX="10" layoutY="700" prefWidth="180"
-                onAction="#handleSignOut"
-                style="-fx-background-color: transparent; -fx-text-fill: #A8452F; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-border-width: 0; -fx-cursor: hand;"/>
-        <Separator orientation="VERTICAL" layoutX="200" layoutY="0" prefHeight="768"/>
-
-        <!-- Page Title -->
-        <Label fx:id="pageTitle" text="Dashboard Overview" layoutX="225" layoutY="20"
-               style="-fx-font-size: 26; -fx-font-weight: bold; -fx-text-fill: #20241E;"/>
-
-        <!-- Metric Cards -->
-        <Pane layoutX="225" layoutY="60" prefWidth="183" prefHeight="78"
-              style="-fx-background-color: #F5F1E6; -fx-border-color: #D8D2C0; -fx-border-width: 1;">
-            <children>
-                <Label fx:id="lblOccupiedNum" text="42" layoutX="12" layoutY="8"
-                       style="-fx-font-size: 22; -fx-font-weight: bold; -fx-text-fill: #20241E;"/>
-                <Label fx:id="lblOccupiedTitle" text="Occupied Rooms" layoutX="12" layoutY="46"
-                       style="-fx-font-size: 12; -fx-text-fill: #8B8A82;"/>
-            </children>
-        </Pane>
-        <Pane layoutX="418" layoutY="60" prefWidth="183" prefHeight="78"
-              style="-fx-background-color: #F5F1E6; -fx-border-color: #D8D2C0; -fx-border-width: 1;">
-            <children>
-                <Label fx:id="lblVacantNum" text="18" layoutX="12" layoutY="8"
-                       style="-fx-font-size: 22; -fx-font-weight: bold; -fx-text-fill: #20241E;"/>
-                <Label fx:id="lblVacantTitle" text="Vacant Rooms" layoutX="12" layoutY="46"
-                       style="-fx-font-size: 12; -fx-text-fill: #8B8A82;"/>
-            </children>
-        </Pane>
-        <Pane layoutX="611" layoutY="60" prefWidth="183" prefHeight="78"
-              style="-fx-background-color: #F5F1E6; -fx-border-color: #D8D2C0; -fx-border-width: 1;">
-            <children>
-                <Label fx:id="lblPendingNum" text="\$1,240" layoutX="12" layoutY="8"
-                       style="-fx-font-size: 22; -fx-font-weight: bold; -fx-text-fill: #20241E;"/>
-                <Label fx:id="lblPendingTitle" text="Pending Payments" layoutX="12" layoutY="46"
-                       style="-fx-font-size: 12; -fx-text-fill: #8B8A82;"/>
-            </children>
-        </Pane>
-        <Pane layoutX="804" layoutY="60" prefWidth="200" prefHeight="78"
-              style="-fx-background-color: #F5F1E6; -fx-border-color: #D8D2C0; -fx-border-width: 1;">
-            <children>
-                <Label fx:id="lblRequestsNum" text="5" layoutX="12" layoutY="8"
-                       style="-fx-font-size: 22; -fx-font-weight: bold; -fx-text-fill: #20241E;"/>
-                <Label fx:id="lblRequestsTitle" text="Open Maintenance" layoutX="12" layoutY="46"
-                       style="-fx-font-size: 12; -fx-text-fill: #8B8A82;"/>
-            </children>
-        </Pane>
-
-        <!-- Room Grid -->
-        <Label fx:id="gridTitle" text="Room Occupancy Status Grid" layoutX="225" layoutY="158"
-               style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #20241E;"/>
-        <FlowPane fx:id="roomGrid" layoutX="225" layoutY="183" prefWidth="795" prefHeight="170"
-                  hgap="12" vgap="12"/>
-
-        <!-- Activity Log -->
-        <Label fx:id="activityTitle" text="Recent Logged Activity" layoutX="225" layoutY="370"
-               style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #20241E;"/>
-        <TableView fx:id="activityTable" layoutX="225" layoutY="395" prefWidth="790" prefHeight="358">
-            <columns>
-                <TableColumn fx:id="colTenant" text="Tenant Name" prefWidth="200"/>
-                <TableColumn fx:id="colAction" text="Action Logged" prefWidth="400"/>
-                <TableColumn fx:id="colTimestamp" text="Timestamp" prefWidth="180"/>
-            </columns>
-        </TableView>
-    </children>
-</AnchorPane>
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.boredom.boredorm.DashboardControl.DashboardController" prefWidth="1024" prefHeight="768" style="-fx-background-color: #FFFFFF;">
+    <left>
+        <VBox fx:id="sidebar" spacing="15" prefWidth="200" style="-fx-background-color: #0A0A0A; -fx-padding: 20;">
+            <Label fx:id="sidebarTitle" text="BoreDorm" style="-fx-font-family: 'Georgia'; -fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #FFFFFF; -fx-padding: 0 0 20 0;"/>
+            <Button fx:id="navDashboard" text="Dashboard" onAction="#handleNavDashboard" style="-fx-background-color: #FFFFFF; -fx-text-fill: #0A0A0A; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-font-weight: bold; -fx-font-family: 'Inter'; -fx-cursor: hand;"/>
+            <Button fx:id="navTenants" text="Tenants" onAction="#handleNavTenants" style="-fx-background-color: transparent; -fx-text-fill: #9C9C9C; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-font-family: 'Inter'; -fx-cursor: hand;"/>
+            <Button fx:id="navRooms" text="Rooms" onAction="#handleNavRooms" style="-fx-background-color: transparent; -fx-text-fill: #9C9C9C; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-font-family: 'Inter'; -fx-cursor: hand;"/>
+            <Button fx:id="navBilling" text="Billing" onAction="#handleNavBilling" style="-fx-background-color: transparent; -fx-text-fill: #9C9C9C; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-font-family: 'Inter'; -fx-cursor: hand;"/>
+            <Button fx:id="navMaintenance" text="Maintenance" onAction="#handleNavMaintenance" style="-fx-background-color: transparent; -fx-text-fill: #9C9C9C; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-font-family: 'Inter'; -fx-cursor: hand;"/>
+            <Region VBox.vgrow="ALWAYS"/>
+            <Button fx:id="btnSignOut" text="Sign Out" onAction="#handleSignOut" style="-fx-background-color: transparent; -fx-text-fill: #9C9C9C; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-font-family: 'Inter'; -fx-cursor: hand;"/>
+        </VBox>
+    </left>
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-background-color: #FFFFFF; -fx-background: #FFFFFF; -fx-border-color: transparent;">
+            <VBox fx:id="contentArea" spacing="24" style="-fx-background-color: #FFFFFF; -fx-padding: 30;">
+                <Label fx:id="pageTitle" text="Dashboard Overview" style="-fx-font-family: 'Georgia'; -fx-font-size: 26; -fx-font-weight: bold; -fx-text-fill: #0A0A0A; -fx-padding: 0 0 10 0; -fx-border-color: #0A0A0A; -fx-border-width: 0 0 2 0;"/>
+                <HBox spacing="16" alignment="CENTER">
+                    <VBox fx:id="cardOccupied" HBox.hgrow="ALWAYS" style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-border-radius: 0; -fx-padding: 20; -fx-spacing: 8;">
+                        <Label fx:id="lblOccupiedNum" text="42" style="-fx-font-family: 'JetBrains Mono'; -fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: #0A0A0A;"/>
+                        <Label fx:id="lblOccupiedTitle" text="OCCUPIED ROOMS" style="-fx-font-family: 'Inter'; -fx-font-size: 11; -fx-font-weight: bold; -fx-text-fill: #4A4A4A;"/>
+                    </VBox>
+                    <VBox fx:id="cardVacant" HBox.hgrow="ALWAYS" style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-border-radius: 0; -fx-padding: 20; -fx-spacing: 8;">
+                        <Label fx:id="lblVacantNum" text="18" style="-fx-font-family: 'JetBrains Mono'; -fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: #0A0A0A;"/>
+                        <Label fx:id="lblVacantTitle" text="VACANT ROOMS" style="-fx-font-family: 'Inter'; -fx-font-size: 11; -fx-font-weight: bold; -fx-text-fill: #4A4A4A;"/>
+                    </VBox>
+                    <VBox fx:id="cardPending" HBox.hgrow="ALWAYS" style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-border-radius: 0; -fx-padding: 20; -fx-spacing: 8;">
+                        <Label fx:id="lblPendingNum" text="One thousand" style="-fx-font-family: 'JetBrains Mono'; -fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: #0A0A0A;"/>
+                        <Label fx:id="lblPendingTitle" text="PENDING PAYMENTS" style="-fx-font-family: 'Inter'; -fx-font-size: 11; -fx-font-weight: bold; -fx-text-fill: #4A4A4A;"/>
+                    </VBox>
+                    <VBox fx:id="cardRequests" HBox.hgrow="ALWAYS" style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-border-radius: 0; -fx-padding: 20; -fx-spacing: 8;">
+                        <Label fx:id="lblRequestsNum" text="5" style="-fx-font-family: 'JetBrains Mono'; -fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: #0A0A0A;"/>
+                        <Label fx:id="lblRequestsTitle" text="OPEN MAINTENANCE" style="-fx-font-family: 'Inter'; -fx-font-size: 11; -fx-font-weight: bold; -fx-text-fill: #4A4A4A;"/>
+                    </VBox>
+                </HBox>
+                <VBox spacing="12">
+                    <Label fx:id="gridTitle" text="Room Occupancy Status Grid" style="-fx-font-family: 'Georgia'; -fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #0A0A0A; -fx-padding: 0 0 4 0; -fx-border-color: #0A0A0A; -fx-border-width: 0 0 1 0;"/>
+                    <FlowPane fx:id="roomGrid" hgap="12" vgap="12"/>
+                </VBox>
+                <VBox spacing="12">
+                    <Label fx:id="activityTitle" text="Recent Logged Activity" style="-fx-font-family: 'Georgia'; -fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #0A0A0A; -fx-padding: 0 0 4 0; -fx-border-color: #0A0A0A; -fx-border-width: 0 0 1 0;"/>
+                    <TableView fx:id="activityTable" prefHeight="200" style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-font-family: 'Inter'; -fx-font-size: 12;">
+                        <columns>
+                            <TableColumn fx:id="colTenant" text="Tenant Name" prefWidth="200"/>
+                            <TableColumn fx:id="colAction" text="Action Logged" prefWidth="400"/>
+                            <TableColumn fx:id="colTimestamp" text="Timestamp" prefWidth="180"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane>

@@ -1,54 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<AnchorPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.boredom.boredorm.MaintenanceControl.MaintenanceController"
-            prefWidth="1024" prefHeight="768"
-            style="-fx-background-color: #F5F1E6;">
-    <children>
-        <!-- Sidebar Background -->
-        <Pane layoutX="0" layoutY="0" prefWidth="200" prefHeight="768"
-              style="-fx-background-color: #1E2B22;"/>
-        <Label fx:id="sidebarTitle" text="BoreDorm" layoutX="20" layoutY="20"
-               style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #F5F1E6;"/>
-        <Button fx:id="navDashboard" text="Dashboard" layoutX="10" layoutY="65" prefWidth="180"
-                onAction="#handleNavDashboard"
-                style="-fx-background-color: transparent; -fx-text-fill: #D8D2C0; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-border-width: 0; -fx-cursor: hand;"/>
-        <Button fx:id="navTenants" text="Tenants" layoutX="10" layoutY="105" prefWidth="180"
-                onAction="#handleNavTenants"
-                style="-fx-background-color: transparent; -fx-text-fill: #D8D2C0; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-border-width: 0; -fx-cursor: hand;"/>
-        <Button fx:id="navRooms" text="Rooms" layoutX="10" layoutY="145" prefWidth="180"
-                onAction="#handleNavRooms"
-                style="-fx-background-color: transparent; -fx-text-fill: #D8D2C0; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-border-width: 0; -fx-cursor: hand;"/>
-        <Button fx:id="navBilling" text="Billing" layoutX="10" layoutY="185" prefWidth="180"
-                onAction="#handleNavBilling"
-                style="-fx-background-color: transparent; -fx-text-fill: #D8D2C0; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-border-width: 0; -fx-cursor: hand;"/>
-        <Button fx:id="navMaintenance" text="Maintenance" layoutX="10" layoutY="225" prefWidth="180"
-                onAction="#handleNavMaintenance"
-                style="-fx-background-color: #C89B3C; -fx-text-fill: #1E2B22; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-border-width: 0; -fx-cursor: hand;"/>
-        <Button fx:id="btnSignOut" text="Sign Out" layoutX="10" layoutY="700" prefWidth="180"
-                onAction="#handleSignOut"
-                style="-fx-background-color: transparent; -fx-text-fill: #A8452F; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-border-width: 0; -fx-cursor: hand;"/>
-        <Separator orientation="VERTICAL" layoutX="200" layoutY="0" prefHeight="768"/>
-
-        <!-- Content -->
-        <Label fx:id="pageTitle" text="Maintenance Services" layoutX="220" layoutY="20"
-               style="-fx-font-size: 26; -fx-font-weight: bold; -fx-text-fill: #20241E;"/>
-        <TextField fx:id="searchField" promptText="Search requests..."
-                   layoutX="220" layoutY="60" prefWidth="530"
-                   style="-fx-background-color: #F5F1E6; -fx-border-color: #D8D2C0; -fx-border-width: 1; -fx-padding: 8;"/>
-        <ComboBox fx:id="comboFilterStatus" promptText="Status Filter"
-                  layoutX="760" layoutY="60" prefWidth="230"
-                  style="-fx-background-color: #F5F1E6; -fx-border-color: #D8D2C0; -fx-border-width: 1;"/>
-        <TableView fx:id="maintenanceTable" layoutX="220" layoutY="95" prefWidth="790" prefHeight="660">
-            <columns>
-                <TableColumn fx:id="colTenant" text="Tenant Name" prefWidth="150"/>
-                <TableColumn fx:id="colRoom" text="Room" prefWidth="80"/>
-                <TableColumn fx:id="colDescription" text="Issue Description" prefWidth="270"/>
-                <TableColumn fx:id="colDateFiled" text="Date Filed" prefWidth="110"/>
-                <TableColumn fx:id="colStatus" text="Status" prefWidth="90"/>
-                <TableColumn fx:id="colStaff" text="Assigned Staff" prefWidth="100"/>
-            </columns>
-        </TableView>
-    </children>
-</AnchorPane>
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.boredom.boredorm.MaintenanceControl.MaintenanceController" prefWidth="1024" prefHeight="768" style="-fx-background-color: #FFFFFF;">
+    <left>
+        <VBox fx:id="sidebar" spacing="15" prefWidth="200" style="-fx-background-color: #0A0A0A; -fx-padding: 20;">
+            <Label fx:id="sidebarTitle" text="BoreDorm" style="-fx-font-family: 'Georgia'; -fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #FFFFFF; -fx-padding: 0 0 20 0;"/>
+            <Button fx:id="navDashboard" text="Dashboard" onAction="#handleNavDashboard" style="-fx-background-color: transparent; -fx-text-fill: #9C9C9C; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-font-family: 'Inter'; -fx-cursor: hand;"/>
+            <Button fx:id="navTenants" text="Tenants" onAction="#handleNavTenants" style="-fx-background-color: transparent; -fx-text-fill: #9C9C9C; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-font-family: 'Inter'; -fx-cursor: hand;"/>
+            <Button fx:id="navRooms" text="Rooms" onAction="#handleNavRooms" style="-fx-background-color: transparent; -fx-text-fill: #9C9C9C; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-font-family: 'Inter'; -fx-cursor: hand;"/>
+            <Button fx:id="navBilling" text="Billing" onAction="#handleNavBilling" style="-fx-background-color: transparent; -fx-text-fill: #9C9C9C; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-font-family: 'Inter'; -fx-cursor: hand;"/>
+            <Button fx:id="navMaintenance" text="Maintenance" onAction="#handleNavMaintenance" style="-fx-background-color: #FFFFFF; -fx-text-fill: #0A0A0A; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-font-weight: bold; -fx-font-family: 'Inter'; -fx-cursor: hand;"/>
+            <Region VBox.vgrow="ALWAYS"/>
+            <Button fx:id="btnSignOut" text="Sign Out" onAction="#handleSignOut" style="-fx-background-color: transparent; -fx-text-fill: #9C9C9C; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-font-family: 'Inter'; -fx-cursor: hand;"/>
+        </VBox>
+    </left>
+    <center>
+        <VBox fx:id="contentArea" spacing="16" style="-fx-background-color: #FFFFFF; -fx-padding: 30;">
+            <Label fx:id="pageTitle" text="Maintenance Services" style="-fx-font-family: 'Georgia'; -fx-font-size: 26; -fx-font-weight: bold; -fx-text-fill: #0A0A0A; -fx-padding: 0 0 10 0; -fx-border-color: #0A0A0A; -fx-border-width: 0 0 2 0;"/>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <TextField fx:id="searchField" promptText="Search requests..." HBox.hgrow="ALWAYS" style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-padding: 8; -fx-text-fill: #0A0A0A; -fx-font-family: 'Inter'; -fx-font-size: 12;"/>
+                <ComboBox fx:id="comboFilterStatus" promptText="Status Filter" prefWidth="180" style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-font-family: 'Inter'; -fx-font-size: 12;"/>
+            </HBox>
+            <TableView fx:id="maintenanceTable" style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-font-family: 'Inter'; -fx-font-size: 12;" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colTenant" text="Tenant Name" prefWidth="160"/>
+                    <TableColumn fx:id="colRoom" text="Room" prefWidth="80"/>
+                    <TableColumn fx:id="colDescription" text="Issue Description" prefWidth="300"/>
+                    <TableColumn fx:id="colDateFiled" text="Date Filed" prefWidth="120"/>
+                    <TableColumn fx:id="colStatus" text="Status" prefWidth="100"/>
+                    <TableColumn fx:id="colStaff" text="Assigned Staff" prefWidth="120"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+</BorderPane>

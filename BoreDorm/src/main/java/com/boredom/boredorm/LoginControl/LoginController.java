@@ -7,12 +7,28 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
-public class LoginController {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class LoginController implements Initializable {
     @FXML private Label titleLabel;
+    @FXML private Label usernameLabel;
     @FXML private TextField usernameField;
+    @FXML private Label passwordLabel;
     @FXML private PasswordField passwordField;
     @FXML private Button signInButton;
     @FXML private Label errorLabel;
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        titleLabel.setId("titleLabel");
+        usernameLabel.setId("usernameLabel");
+        usernameField.setId("usernameField");
+        passwordLabel.setId("passwordLabel");
+        passwordField.setId("passwordField");
+        signInButton.setId("signInButton");
+        errorLabel.setId("errorLabel");
+    }
 
     @FXML
     private void handleLogin(ActionEvent event) {

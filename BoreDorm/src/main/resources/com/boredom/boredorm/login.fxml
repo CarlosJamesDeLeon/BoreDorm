@@ -1,29 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<AnchorPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.boredom.boredorm.LoginControl.LoginController"
-            prefWidth="800" prefHeight="600"
-            style="-fx-background-color: #1E2B22;">
-    <children>
-        <VBox layoutX="220" layoutY="115" prefWidth="360" spacing="12"
-              style="-fx-background-color: #F5F1E6; -fx-padding: 30; -fx-border-color: #D8D2C0; -fx-border-width: 1;">
-            <children>
-                <Label fx:id="titleLabel" text="BoreDorm Sign In"
-                       style="-fx-font-size: 22; -fx-font-weight: bold; -fx-text-fill: #20241E;"/>
-                <Label text="Username"
-                       style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #20241E;"/>
-                <TextField fx:id="usernameField"
-                           style="-fx-background-color: #F5F1E6; -fx-border-color: #D8D2C0; -fx-border-width: 1; -fx-padding: 8; -fx-text-fill: #20241E;"/>
-                <Label text="Password"
-                       style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #20241E;"/>
-                <PasswordField fx:id="passwordField"
-                               style="-fx-background-color: #F5F1E6; -fx-border-color: #D8D2C0; -fx-border-width: 1; -fx-padding: 8; -fx-text-fill: #20241E;"/>
-                <Button fx:id="signInButton" text="Sign In" onAction="#handleLogin" maxWidth="Infinity"
-                        style="-fx-background-color: #C89B3C; -fx-text-fill: #F5F1E6; -fx-background-radius: 0; -fx-border-width: 0; -fx-padding: 10 20; -fx-cursor: hand; -fx-font-size: 13;"/>
-                <Label fx:id="errorLabel" visible="false"
-                       style="-fx-text-fill: #A8452F; -fx-font-size: 12;"/>
-            </children>
+<StackPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.boredom.boredorm.LoginControl.LoginController" prefWidth="800" prefHeight="600" style="-fx-background-color: #F5F5F5;">
+    <VBox alignment="CENTER" spacing="20" prefWidth="360" layoutX="220" layoutY="150" style="-fx-background-color: #FFFFFF; -fx-padding: 40; -fx-spacing: 16; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-border-radius: 0;">
+        <Label fx:id="titleLabel" text="BoreDorm Sign In" style="-fx-font-family: 'Georgia'; -fx-font-size: 22; -fx-font-weight: bold; -fx-text-fill: #0A0A0A;"/>
+        <VBox spacing="8" alignment="CENTER_LEFT" fillWidth="true">
+            <Label fx:id="usernameLabel" text="Username" style="-fx-font-family: 'JetBrains Mono'; -fx-font-size: 11; -fx-font-weight: bold; -fx-text-fill: #4A4A4A;"/>
+            <TextField fx:id="usernameField" style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-padding: 10; -fx-text-fill: #0A0A0A; -fx-font-family: 'JetBrains Mono';"/>
         </VBox>
-    </children>
-</AnchorPane>
+        <VBox spacing="8" alignment="CENTER_LEFT" fillWidth="true">
+            <Label fx:id="passwordLabel" text="Password" style="-fx-font-family: 'JetBrains Mono'; -fx-font-size: 11; -fx-font-weight: bold; -fx-text-fill: #4A4A4A;"/>
+            <PasswordField fx:id="passwordField" style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-padding: 10; -fx-text-fill: #0A0A0A; -fx-font-family: 'JetBrains Mono';"/>
+        </VBox>
+        <Button fx:id="signInButton" text="Sign In" onAction="#handleLogin" maxWidth="Infinity" style="-fx-background-color: #0A0A0A; -fx-text-fill: #FFFFFF; -fx-background-radius: 0; -fx-border-width: 0; -fx-padding: 12 24; -fx-font-family: 'Inter'; -fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 13;"/>
+        <Label fx:id="errorLabel" style="-fx-text-fill: #0A0A0A; -fx-font-weight: bold; -fx-font-family: 'JetBrains Mono'; -fx-font-size: 11; -fx-border-color: #0A0A0A; -fx-border-width: 1; -fx-padding: 6; -fx-background-color: #FFFFFF;" visible="false"/>
+    </VBox>
+</StackPane>

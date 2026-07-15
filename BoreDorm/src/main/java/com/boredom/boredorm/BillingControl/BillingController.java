@@ -1,5 +1,6 @@
 package com.boredom.boredorm.BillingControl;
 
+import com.boredom.boredorm.NavigationUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -41,6 +42,35 @@ public class BillingController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        sidebar.setId("sidebar");
+        sidebarTitle.setId("sidebarTitle");
+        navDashboard.setId("navDashboard");
+        navTenants.setId("navTenants");
+        navRooms.setId("navRooms");
+        navBilling.setId("navBilling");
+        navMaintenance.setId("navMaintenance");
+        btnSignOut.setId("btnSignOut");
+        splitPane.setId("splitPane");
+        leftPanel.setId("leftPanel");
+        panelTitle.setId("panelTitle");
+        searchField.setId("searchField");
+        comboFilterStatus.setId("comboFilterStatus");
+        invoiceTable.setId("invoiceTable");
+        colTenant.setId("colTenant");
+        colRoom.setId("colRoom");
+        colPeriod.setId("colPeriod");
+        colAmount.setId("colAmount");
+        colStatus.setId("colStatus");
+        rightPanel.setId("rightPanel");
+        detailsHeader.setId("detailsHeader");
+        lblAmount.setId("lblAmount");
+        editAmount.setId("editAmount");
+        lblMethod.setId("lblMethod");
+        comboMethod.setId("comboMethod");
+        lblDate.setId("lblDate");
+        editDate.setId("editDate");
+        btnRecord.setId("btnRecord");
+        postStatusLabel.setId("postStatusLabel");
         comboFilterStatus.getItems().addAll("Pending", "Paid", "Overdue");
         comboMethod.getItems().addAll("Cash", "Bank Transfer", "GCash", "Credit Card");
     }
@@ -61,10 +91,33 @@ public class BillingController implements Initializable {
         comboMethod.setValue(null);
     }
 
-    @FXML private void handleNavDashboard(ActionEvent event) { com.boredom.boredorm.NavigationUtil.navigateTo(event, "/com/boredom/boredorm/dashboard.fxml"); }
-    @FXML private void handleNavTenants(ActionEvent event) { com.boredom.boredorm.NavigationUtil.navigateTo(event, "/com/boredom/boredorm/tenant.fxml"); }
-    @FXML private void handleNavRooms(ActionEvent event) { com.boredom.boredorm.NavigationUtil.navigateTo(event, "/com/boredom/boredorm/room.fxml"); }
-    @FXML private void handleNavBilling(ActionEvent event) { com.boredom.boredorm.NavigationUtil.navigateTo(event, "/com/boredom/boredorm/billing.fxml"); }
-    @FXML private void handleNavMaintenance(ActionEvent event) { com.boredom.boredorm.NavigationUtil.navigateTo(event, "/com/boredom/boredorm/maintenanceRequests.fxml"); }
-    @FXML private void handleSignOut(ActionEvent event) { com.boredom.boredorm.NavigationUtil.navigateTo(event, "/com/boredom/boredorm/login.fxml"); }
+    @FXML
+    private void handleNavDashboard(ActionEvent event) {
+        NavigationUtil.navigateTo(event, "/com/boredom/boredorm/dashboard.fxml");
+    }
+
+    @FXML
+    private void handleNavTenants(ActionEvent event) {
+        NavigationUtil.navigateTo(event, "/com/boredom/boredorm/tenant.fxml");
+    }
+
+    @FXML
+    private void handleNavRooms(ActionEvent event) {
+        NavigationUtil.navigateTo(event, "/com/boredom/boredorm/room.fxml");
+    }
+
+    @FXML
+    private void handleNavBilling(ActionEvent event) {
+        NavigationUtil.navigateTo(event, "/com/boredom/boredorm/billing.fxml");
+    }
+
+    @FXML
+    private void handleNavMaintenance(ActionEvent event) {
+        NavigationUtil.navigateTo(event, "/com/boredom/boredorm/maintenanceRequests.fxml");
+    }
+
+    @FXML
+    private void handleSignOut(ActionEvent event) {
+        NavigationUtil.navigateTo(event, "/com/boredom/boredorm/login.fxml");
+    }
 }

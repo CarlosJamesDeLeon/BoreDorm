@@ -14,8 +14,16 @@ public class NavigationUtil {
         try {
             FXMLLoader loader = new FXMLLoader(NavigationUtil.class.getResource(fxmlPath));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(loader.load(), 800, 600);
+            boolean wasMaximized = stage.isMaximized();
+            boolean wasFullScreen = stage.isFullScreen();
+            Scene scene = new Scene(loader.load());
             stage.setScene(scene);
+            if (wasFullScreen) {
+                stage.setFullScreen(true);
+            } else if (wasMaximized) {
+                stage.setMaximized(false);
+                stage.setMaximized(true);
+            }
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
