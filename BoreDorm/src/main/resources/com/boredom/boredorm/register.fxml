@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<StackPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.boredom.boredorm.RegisterControl.RegisterController" prefWidth="800" prefHeight="600" style="-fx-background-color: #F5F5F5;">
+    <VBox alignment="CENTER" spacing="16" prefWidth="360" maxWidth="360" style="-fx-background-color: #FFFFFF; -fx-padding: 40; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-border-radius: 0;">
+        <Label fx:id="titleLabel" text="BoreDorm Sign Up" style="-fx-font-family: 'Georgia'; -fx-font-size: 22; -fx-font-weight: bold; -fx-text-fill: #0A0A0A;"/>
+        <VBox spacing="8" alignment="CENTER_LEFT" fillWidth="true">
+            <Label fx:id="usernameLabel" text="Username" style="-fx-font-family: 'JetBrains Mono'; -fx-font-size: 11; -fx-font-weight: bold; -fx-text-fill: #4A4A4A;"/>
+            <TextField fx:id="usernameField" style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-padding: 10; -fx-text-fill: #0A0A0A; -fx-font-family: 'JetBrains Mono';"/>
+        </VBox>
+        <VBox spacing="8" alignment="CENTER_LEFT" fillWidth="true">
+            <Label fx:id="passwordLabel" text="Password" style="-fx-font-family: 'JetBrains Mono'; -fx-font-size: 11; -fx-font-weight: bold; -fx-text-fill: #4A4A4A;"/>
+            <PasswordField fx:id="passwordField" style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-padding: 10; -fx-text-fill: #0A0A0A; -fx-font-family: 'JetBrains Mono';"/>
+        </VBox>
+        <VBox spacing="8" alignment="CENTER_LEFT" fillWidth="true">
+            <Label fx:id="confirmPasswordLabel" text="Confirm Password" style="-fx-font-family: 'JetBrains Mono'; -fx-font-size: 11; -fx-font-weight: bold; -fx-text-fill: #4A4A4A;"/>
+            <PasswordField fx:id="confirmPasswordField" style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-padding: 10; -fx-text-fill: #0A0A0A; -fx-font-family: 'JetBrains Mono';"/>
+        </VBox>
+        <Button fx:id="signUpButton" text="Sign Up" onAction="#handleRegister" maxWidth="Infinity" style="-fx-background-color: #0A0A0A; -fx-text-fill: #FFFFFF; -fx-background-radius: 0; -fx-border-width: 0; -fx-padding: 12 24; -fx-font-family: 'Inter'; -fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 13;"/>
+        <Button fx:id="goToLoginButton" text="Back to Login" onAction="#handleGoToLogin" maxWidth="Infinity" style="-fx-background-color: #FFFFFF; -fx-text-fill: #0A0A0A; -fx-background-radius: 0; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-padding: 10 24; -fx-font-family: 'Inter'; -fx-font-weight: bold; -fx-cursor: hand; -fx-font-size: 13;"/>
+        <Label fx:id="errorLabel" style="-fx-text-fill: #0A0A0A; -fx-font-weight: bold; -fx-font-family: 'JetBrains Mono'; -fx-font-size: 11; -fx-border-color: #0A0A0A; -fx-border-width: 1; -fx-padding: 6; -fx-background-color: #FFFFFF;" visible="false"/>
+    </VBox>
+</StackPane>
