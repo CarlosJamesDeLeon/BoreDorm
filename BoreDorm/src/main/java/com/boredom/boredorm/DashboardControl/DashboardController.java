@@ -1,6 +1,7 @@
 package com.boredom.boredorm.DashboardControl;
 
 import com.boredom.boredorm.NavigationUtil;
+import com.boredom.boredorm.SessionManaging.SessionManager;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -97,6 +98,7 @@ public class DashboardController implements Initializable {
             roomGrid.getChildren().add(roomBtn);
         }
     }
+
     @FXML
     private void handleNavDashboard(ActionEvent event) {
         NavigationUtil.navigateTo(event, "/com/boredom/boredorm/dashboard.fxml");
@@ -124,6 +126,7 @@ public class DashboardController implements Initializable {
 
     @FXML
     private void handleSignOut(ActionEvent event) {
+        SessionManager.clearLocalSession();
         NavigationUtil.navigateTo(event, "/com/boredom/boredorm/login.fxml");
     }
 }

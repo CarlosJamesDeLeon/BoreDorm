@@ -14,6 +14,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCode;
 import javafx.event.ActionEvent;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -21,7 +23,6 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -49,9 +50,7 @@ public class LoginController implements Initializable {
         goToRegisterButton.setId("goToLoginButton");
         errorLabel.setId("errorLabel");
 
-        // Initialize our DAO layer
         userDAO = new UserDAOImpl();
-
         setupAutocomplete();
     }
 
@@ -63,7 +62,6 @@ public class LoginController implements Initializable {
             if (autocompletePopup != null && autocompletePopup.isShowing()) {
                 autocompletePopup.hide();
             } else if (autocompletePopup != null) {
-                // READ: Get all users from DAO
                 List<User> allUsers = userDAO.getAllUsers();
                 if (!allUsers.isEmpty()) {
                     autocompletePopup.getItems().clear();
@@ -86,6 +84,13 @@ public class LoginController implements Initializable {
     }
 
     @FXML
+    private void handleKeyPress(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            handleLogin(new ActionEvent(event.getSource(), event.getTarget()));
+        }
+    }
+
+    @FXML
     private void handleLogin(ActionEvent event) {
         String username = usernameField.getText();
         String password = passwordField.getText();
@@ -95,14 +100,11 @@ public class LoginController implements Initializable {
             return;
         }
 
-        // READ: Fetch the user details using our DAO
         User user = userDAO.getUserByUsername(username.trim());
 
         if (user != null) {
-            // Verify BCRYPT Hash
             if (BCrypt.checkpw(password, user.getPassword())) {
                 hideError();
-
                 String sessionToken = SessionManager.generateToken();
                 saveSessionToDatabase(user.getUserId(), sessionToken);
                 SessionManager.saveSessionLocally(sessionToken);

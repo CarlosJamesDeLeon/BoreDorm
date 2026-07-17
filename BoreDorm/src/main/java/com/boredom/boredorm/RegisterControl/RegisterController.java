@@ -43,12 +43,11 @@ public class RegisterController implements Initializable {
         goToLoginButton.setId("goToLoginButton");
         errorLabel.setId("errorLabel");
 
-        // Initialize our DAO layer
         userDAO = new UserDAOImpl();
     }
 
     @FXML
-    private void handleRegister(ActionEvent event) {
+    public void handleRegister(ActionEvent event) {
         String username = usernameField.getText();
         String password = passwordField.getText();
         String confirmPassword = confirmPasswordField.getText();
@@ -65,13 +64,10 @@ public class RegisterController implements Initializable {
             return;
         }
 
-        // 1. Hash password
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
-        // 2. Create our Model instance
         User newUser = new User(0, username.trim(), hashedPassword, "tenant");
 
-        // 3. Call the DAO to CREATE the user in the database
         boolean success = userDAO.createUser(newUser);
 
         if (success) {
@@ -83,7 +79,7 @@ public class RegisterController implements Initializable {
     }
 
     @FXML
-    private void handleGoToLogin(ActionEvent event) {
+    public void handleGoToLogin(ActionEvent event) {
         NavigationUtil.navigateTo(event, "/com/boredom/boredorm/login.fxml");
     }
 

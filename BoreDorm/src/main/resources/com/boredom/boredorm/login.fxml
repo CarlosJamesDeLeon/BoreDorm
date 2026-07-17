@@ -40,12 +40,12 @@
                 <VBox spacing="16">
                     <VBox spacing="6" alignment="CENTER_LEFT" fillWidth="true">
                         <Label fx:id="usernameLabel" text="Username" style="-fx-font-family: 'JetBrains Mono'; -fx-font-size: 11; -fx-font-weight: bold; -fx-text-fill: #4A4A4A;"/>
-                        <TextField fx:id="usernameField" style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-padding: 10; -fx-text-fill: #0A0A0A; -fx-font-family: 'JetBrains Mono';"/>
+                        <TextField fx:id="usernameField" onKeyPressed="#handleKeyPress" style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-padding: 10; -fx-text-fill: #0A0A0A; -fx-font-family: 'JetBrains Mono';"/>
                     </VBox>
 
                     <VBox spacing="6" alignment="CENTER_LEFT" fillWidth="true">
                         <Label fx:id="passwordLabel" text="Password" style="-fx-font-family: 'JetBrains Mono'; -fx-font-size: 11; -fx-font-weight: bold; -fx-text-fill: #4A4A4A;"/>
-                        <PasswordField fx:id="passwordField" style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-padding: 10; -fx-text-fill: #0A0A0A; -fx-font-family: 'JetBrains Mono';"/>
+                        <PasswordField fx:id="passwordField" onKeyPressed="#handleKeyPress" style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-padding: 10; -fx-text-fill: #0A0A0A; -fx-font-family: 'JetBrains Mono';"/>
                     </VBox>
                 </VBox>
 
