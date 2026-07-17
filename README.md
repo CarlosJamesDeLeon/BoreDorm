@@ -8,4 +8,4 @@
 - Username: `JayVinceUser`
 - Password: `User.123456`
 
-- PS: Can still create accounts, just directs to unfinished User UI
+## Create an account feature works, just automated to open User, not Admin.
