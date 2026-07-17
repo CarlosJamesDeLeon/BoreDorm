@@ -1,6 +1,8 @@
 package com.boredom.boredorm.RegisterControl;
 
-import com.boredom.boredorm.DBConnection;
+import com.boredom.boredorm.DAO.UserDAO;
+import com.boredom.boredorm.DAO.UserDAOImpl;
+import com.boredom.boredorm.Models.User;
 import com.boredom.boredorm.NavigationUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,10 +14,6 @@ import javafx.event.ActionEvent;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class RegisterController implements Initializable {
@@ -30,6 +28,8 @@ public class RegisterController implements Initializable {
     @FXML private Button goToLoginButton;
     @FXML private Label errorLabel;
 
+    private UserDAO userDAO;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         titleLabel.setId("titleLabel");
@@ -42,6 +42,9 @@ public class RegisterController implements Initializable {
         signUpButton.setId("signUpButton");
         goToLoginButton.setId("goToLoginButton");
         errorLabel.setId("errorLabel");
+
+        // Initialize our DAO layer
+        userDAO = new UserDAOImpl();
     }
 
     @FXML
@@ -62,25 +65,20 @@ public class RegisterController implements Initializable {
             return;
         }
 
-        try (Connection conn = DBConnection.getConnection()) {
-            if (usernameExists(conn, username.trim())) {
-                showError("Username is already taken.");
-                return;
-            }
+        // 1. Hash password
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
-            String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-            String insertQuery = "INSERT INTO users (username, password) VALUES (?, ?)";
+        // 2. Create our Model instance
+        User newUser = new User(0, username.trim(), hashedPassword, "tenant");
 
-            try (PreparedStatement insertStmt = conn.prepareStatement(insertQuery)) {
-                insertStmt.setString(1, username.trim());
-                insertStmt.setString(2, hashedPassword);
-                insertStmt.executeUpdate();
+        // 3. Call the DAO to CREATE the user in the database
+        boolean success = userDAO.createUser(newUser);
 
-                errorLabel.setVisible(false);
-                NavigationUtil.navigateTo(event, "/com/boredom/boredorm/login.fxml");
-            }
-        } catch (SQLException e) {
-            showError("Database integration failed.");
+        if (success) {
+            hideError();
+            NavigationUtil.navigateTo(event, "/com/boredom/boredorm/login.fxml");
+        } else {
+            showError("Username may already exist or system error.");
         }
     }
 
@@ -89,18 +87,14 @@ public class RegisterController implements Initializable {
         NavigationUtil.navigateTo(event, "/com/boredom/boredorm/login.fxml");
     }
 
-    private boolean usernameExists(Connection conn, String username) throws SQLException {
-        String query = "SELECT 1 FROM users WHERE username = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, username);
-            try (ResultSet rs = stmt.executeQuery()) {
-                return rs.next();
-            }
-        }
-    }
-
     private void showError(String message) {
         errorLabel.setText(message);
         errorLabel.setVisible(true);
+        errorLabel.setManaged(true);
+    }
+
+    private void hideError() {
+        errorLabel.setVisible(false);
+        errorLabel.setManaged(false);
     }
 }

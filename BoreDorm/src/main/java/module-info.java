@@ -16,6 +16,12 @@ module com.boredom.boredorm {
 
     opens com.boredom.boredorm.RegisterControl to javafx.fxml;
 
+    opens com.boredom.boredorm.SessionManaging to javafx.fxml;
+    exports com.boredom.boredorm.SessionManaging;
     exports com.boredom.boredorm;
     exports com.boredom.boredorm.RegisterControl;
+    opens com.boredom.boredorm.TenantDashboardControl to javafx.fxml;
+    exports com.boredom.boredorm.TenantControl;
+
+
 }
