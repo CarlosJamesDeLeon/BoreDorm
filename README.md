@@ -1,13 +1,11 @@
-FOR SIR SERATO
+## Test Accounts (for Sir Serato)
 
-To access the admin page:
+**Admin access**
+- Username: `JayVinceAdmin`
+- Password: `Serato.123456`
 
-Username - JayVinceAdmin
+**User access**
+- Username: `JayVinceUser`
+- Password: `User.123456`
 
-Password - Serato.123456  
-
-To access the user page:
-
-Username - JayVinceUser
-
-Password - User.123456
+- PS: Can still create accounts, just directs to unfinished User UI
