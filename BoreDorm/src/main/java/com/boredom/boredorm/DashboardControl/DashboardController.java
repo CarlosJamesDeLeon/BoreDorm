@@ -60,7 +60,7 @@ public class DashboardController implements Initializable {
     }
 
     private void applyRoleBasedAccess() {
-        String role = SessionManager.getCurrentUserRole();
+        String role = SessionManager.getInstance().getCurrentUserRole();
 
         if (role != null && !"admin".equalsIgnoreCase(role.trim())) {
             if (navTenants != null) navTenants.setVisible(false);
@@ -127,7 +127,7 @@ public class DashboardController implements Initializable {
 
     @FXML private void handleSignOut(ActionEvent event) {
         // ✅ SERIALIZATION: Deletes session.dat file on logout
-        SessionManager.clearSession();
+        SessionManager.getInstance().clearSession();
         System.out.println("[Dashboard] Session file deleted. User logged out.");
         NavigationUtil.navigateTo(event, "/com/boredom/boredorm/login.fxml");
     }

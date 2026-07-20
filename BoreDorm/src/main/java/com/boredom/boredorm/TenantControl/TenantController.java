@@ -160,7 +160,7 @@ public class TenantController {
     @FXML private void handleNavMaintenance(ActionEvent event) { NavigationUtil.navigateTo(event, "/com/boredom/boredorm/maintenanceRequests.fxml"); }
     @FXML private void handleSignOut(ActionEvent event) {
         // ✅ SERIALIZATION: Deletes session.dat file on logout
-        SessionManager.clearSession();
+        SessionManager.getInstance().clearSession();
         System.out.println("[Tenant] Session file deleted. User logged out.");
         NavigationUtil.navigateTo(event, "/com/boredom/boredorm/login.fxml");
     }

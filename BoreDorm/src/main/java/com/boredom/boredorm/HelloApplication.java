@@ -14,8 +14,8 @@ public class HelloApplication extends Application {
         String initialFxml = "/com/boredom/boredorm/login.fxml";
 
         // ✅ SERIALIZATION: Use the serialized session file to maintain state on launch
-        if (SessionManager.isSessionActive()) {
-            User user = SessionManager.loadSession();
+        if (SessionManager.getInstance().isSessionActive()) {
+            User user = SessionManager.getInstance().loadSession();
             if (user != null) {
                 if ("Admin".equalsIgnoreCase(user.getRole())) {
                     initialFxml = "/com/boredom/boredorm/dashboard.fxml";

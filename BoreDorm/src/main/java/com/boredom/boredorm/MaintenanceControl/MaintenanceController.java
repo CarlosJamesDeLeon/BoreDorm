@@ -83,7 +83,7 @@ public class MaintenanceController implements Initializable {
     @FXML
     private void handleSignOut(ActionEvent event) {
         // ✅ SERIALIZATION: Delete session.dat on sign out
-        SessionManager.clearSession();
+        SessionManager.getInstance().clearSession();
         System.out.println("[Maintenance] Session file deleted. User logged out.");
         NavigationUtil.navigateTo(event, "/com/boredom/boredorm/login.fxml");
     }

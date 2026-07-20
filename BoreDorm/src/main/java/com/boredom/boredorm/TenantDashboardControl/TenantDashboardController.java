@@ -59,7 +59,7 @@ public class TenantDashboardController {
 
     private void loadTenantData() {
         // ✅ SERIALIZATION: Load real user info from session.dat
-        User sessionUser = SessionManager.loadSession();
+        User sessionUser = SessionManager.getInstance().loadSession();
         if (sessionUser != null) {
             if (usernameLabel != null) usernameLabel.setText(sessionUser.getUsername());
             if (roomLabel != null) roomLabel.setText(
@@ -75,7 +75,7 @@ public class TenantDashboardController {
     @FXML
     private void handleLogout(ActionEvent event) {
         // ✅ SERIALIZATION: Delete session.dat on tenant logout
-        SessionManager.clearSession();
+        SessionManager.getInstance().clearSession();
         System.out.println("[TenantDashboard] Session file deleted. User logged out.");
         NavigationUtil.navigateTo(event, "/com/boredom/boredorm/login.fxml");
     }
@@ -88,7 +88,7 @@ public class TenantDashboardController {
     @FXML private void handleNavMaintenance(ActionEvent event) {}
     @FXML private void handleSignOut(ActionEvent event) {
         // ✅ SERIALIZATION: Delete session.dat on sign out
-        SessionManager.clearSession();
+        SessionManager.getInstance().clearSession();
         NavigationUtil.navigateTo(event, "/com/boredom/boredorm/login.fxml");
     }
     @FXML private void handleSaveTenant(ActionEvent event) {}

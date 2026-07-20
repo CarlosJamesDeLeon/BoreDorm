@@ -120,7 +120,7 @@ public class BillingController implements Initializable {
     @FXML
     private void handleSignOut(ActionEvent event) {
         // ✅ SERIALIZATION: Delete session.dat on sign out
-        SessionManager.clearSession();
+        SessionManager.getInstance().clearSession();
         System.out.println("[Billing] Session file deleted. User logged out.");
         NavigationUtil.navigateTo(event, "/com/boredom/boredorm/login.fxml");
     }

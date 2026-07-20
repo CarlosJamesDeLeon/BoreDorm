@@ -1,32 +1,27 @@
 package com.boredom.boredorm.SessionManaging;
 
 import com.boredom.boredorm.Models.User;
-
 import java.io.*;
 
 /**
  * SOLID Principle #1 — Single Responsibility Principle (SRP)
- *
  * SessionManager has ONE responsibility: manage the user's session lifecycle.
- * It creates, reads, validates, and deletes the serialized session file (session.dat).
- * It does NOT handle UI navigation, database queries, or business logic.
- *
- * Benefit: Changes to session storage (e.g., switching from file to DB) only
- * affect this one class, not controllers or DAOs.
- *
- * SOLID Principle #2 — Dependency Inversion Principle (DIP)
- * Implements ISessionManager so controllers depend on the interface abstraction,
- * not this concrete class directly.
+ * It implements ISessionManager as a Singleton.
  */
 public class SessionManager implements ISessionManager {
 
-    // Session file stored in the user's home directory for cross-platform support
     private static final String SESSION_FILE = System.getProperty("user.home") + File.separator + "session.dat";
+    
+    private static final SessionManager instance = new SessionManager();
 
-    // -----------------------------------------------------------------------
-    // SAVE — Serializes the logged-in User object to session.dat
-    // -----------------------------------------------------------------------
-    public static void saveSession(User user) {
+    private SessionManager() {}
+
+    public static SessionManager getInstance() {
+        return instance;
+    }
+
+    @Override
+    public void saveSession(User user) {
         try (ObjectOutputStream oos = new ObjectOutputStream(
                 new FileOutputStream(SESSION_FILE))) {
             oos.writeObject(user);
@@ -36,10 +31,8 @@ public class SessionManager implements ISessionManager {
         }
     }
 
-    // -----------------------------------------------------------------------
-    // LOAD — Deserializes User from session.dat; returns null if missing/corrupt
-    // -----------------------------------------------------------------------
-    public static User loadSession() {
+    @Override
+    public User loadSession() {
         File file = new File(SESSION_FILE);
         if (!file.exists()) {
             System.out.println("[SessionManager] No session file found.");
@@ -57,17 +50,13 @@ public class SessionManager implements ISessionManager {
         }
     }
 
-    // -----------------------------------------------------------------------
-    // IS ACTIVE — Check whether a valid session file exists
-    // -----------------------------------------------------------------------
-    public static boolean isSessionActive() {
+    @Override
+    public boolean isSessionActive() {
         return new File(SESSION_FILE).exists();
     }
 
-    // -----------------------------------------------------------------------
-    // CLEAR — Deletes session.dat on logout
-    // -----------------------------------------------------------------------
-    public static void clearSession() {
+    @Override
+    public void clearSession() {
         File file = new File(SESSION_FILE);
         if (file.exists()) {
             boolean deleted = file.delete();
@@ -79,26 +68,21 @@ public class SessionManager implements ISessionManager {
         }
     }
 
-    // -----------------------------------------------------------------------
-    // CONVENIENCE GETTERS — Read current user info without re-deserializing
-    // -----------------------------------------------------------------------
-    public static int getCurrentUserId() {
+    @Override
+    public int getCurrentUserId() {
         User user = loadSession();
         return (user != null) ? user.getUserId() : 0;
     }
 
-    public static String getCurrentUserRole() {
+    @Override
+    public String getCurrentUserRole() {
         User user = loadSession();
         return (user != null) ? user.getRole() : null;
     }
 
-    public static String getCurrentUsername() {
+    @Override
+    public String getCurrentUsername() {
         User user = loadSession();
         return (user != null) ? user.getUsername() : null;
-    }
-
-    // Legacy compatibility method
-    public static void clearLocalSession() {
-        clearSession();
     }
 }

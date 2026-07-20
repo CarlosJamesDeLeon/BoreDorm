@@ -244,7 +244,7 @@ public class RoomController implements Initializable {
     @FXML
     private void handleSignOut(ActionEvent event) {
         // ✅ SERIALIZATION: Deletes session.dat file on logout
-        SessionManager.clearSession();
+        SessionManager.getInstance().clearSession();
         System.out.println("[Room] Session file deleted. User logged out.");
 
         // Return back to the login screen gateway

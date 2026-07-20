@@ -127,7 +127,7 @@ public class LoginController {
 
             if (user != null && BCrypt.checkpw(inputPassword, user.getPassword())) {
                 // ✅ SERIALIZATION: Write user object to session.dat file
-                SessionManager.saveSession(user);
+                SessionManager.getInstance().saveSession(user);
                 System.out.println("[Login] Session file created for: " + user.getUsername());
 
                 if ("Admin".equalsIgnoreCase(user.getRole())) {
