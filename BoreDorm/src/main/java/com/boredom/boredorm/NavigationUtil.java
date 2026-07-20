@@ -3,28 +3,30 @@ package com.boredom.boredorm;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
-
 import java.io.IOException;
+import java.net.URL;
 
 public class NavigationUtil {
 
     public static void navigateTo(ActionEvent event, String fxmlPath) {
         try {
-            FXMLLoader loader = new FXMLLoader(NavigationUtil.class.getResource(fxmlPath));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            boolean wasMaximized = stage.isMaximized();
-            boolean wasFullScreen = stage.isFullScreen();
-            Scene scene = new Scene(loader.load());
-            stage.setScene(scene);
-            if (wasFullScreen) {
-                stage.setFullScreen(true);
-            } else if (wasMaximized) {
-                stage.setMaximized(false);
-                stage.setMaximized(true);
+            URL resource = NavigationUtil.class.getResource(fxmlPath);
+            if (resource == null) {
+                System.err.println("CRITICAL: FXML file not found: " + fxmlPath);
+                return;
             }
-            stage.show();
+
+            FXMLLoader loader = new FXMLLoader(resource);
+            Parent root = loader.load();
+
+            // Grab the current active scene window
+            Scene currentScene = ((Node) event.getSource()).getScene();
+
+            // Swap the internal root layout container seamlessly without changing window sizes
+            currentScene.setRoot(root);
+
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,61 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+
 <BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.boredom.boredorm.TenantControl.TenantController" prefWidth="1024" prefHeight="768" style="-fx-background-color: #FFFFFF;">
     <left>
         <VBox fx:id="sidebar" spacing="15" prefWidth="200" style="-fx-background-color: #0A0A0A; -fx-padding: 20;">
             <Label fx:id="sidebarTitle" text="BoreDorm" style="-fx-font-family: 'Georgia'; -fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #FFFFFF; -fx-padding: 0 0 20 0;"/>
-            <Button fx:id="navDashboard" text="Dashboard" onAction="#handleNavDashboard" style="-fx-background-color: transparent; -fx-text-fill: #9C9C9C; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-font-family: 'Inter'; -fx-cursor: hand;"/>
-            <Button fx:id="navTenants" text="Tenants" onAction="#handleNavTenants" style="-fx-background-color: #FFFFFF; -fx-text-fill: #0A0A0A; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-font-weight: bold; -fx-font-family: 'Inter'; -fx-cursor: hand;"/>
-            <Button fx:id="navRooms" text="Rooms" onAction="#handleNavRooms" style="-fx-background-color: transparent; -fx-text-fill: #9C9C9C; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-font-family: 'Inter'; -fx-cursor: hand;"/>
-            <Button fx:id="navBilling" text="Billing" onAction="#handleNavBilling" style="-fx-background-color: transparent; -fx-text-fill: #9C9C9C; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-font-family: 'Inter'; -fx-cursor: hand;"/>
-            <Button fx:id="navMaintenance" text="Maintenance" onAction="#handleNavMaintenance" style="-fx-background-color: transparent; -fx-text-fill: #9C9C9C; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-font-family: 'Inter'; -fx-cursor: hand;"/>
+            <Button fx:id="navDashboard" text="Dashboard" onAction="#handleNavDashboard" style="-fx-background-color: transparent; -fx-text-fill: #9C9C9C; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-cursor: hand;"/>
+            <Button fx:id="navTenants" text="Tenants" onAction="#handleNavTenants" style="-fx-background-color: #FFFFFF; -fx-text-fill: #0A0A0A; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-font-weight: bold; -fx-cursor: hand;"/>
+            <Button fx:id="navRooms" text="Rooms" onAction="#handleNavRooms" style="-fx-background-color: transparent; -fx-text-fill: #9C9C9C; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-cursor: hand;"/>
+            <Button fx:id="navBilling" text="Billing" onAction="#handleNavBilling" style="-fx-background-color: transparent; -fx-text-fill: #9C9C9C; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-cursor: hand;"/>
+            <Button fx:id="navMaintenance" text="Maintenance" onAction="#handleNavMaintenance" style="-fx-background-color: transparent; -fx-text-fill: #9C9C9C; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-cursor: hand;"/>
             <Region VBox.vgrow="ALWAYS"/>
-            <Button fx:id="btnSignOut" text="Sign Out" onAction="#handleSignOut" style="-fx-background-color: transparent; -fx-text-fill: #9C9C9C; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-font-family: 'Inter'; -fx-cursor: hand;"/>
+            <Button fx:id="btnSignOut" text="Sign Out" onAction="#handleSignOut" style="-fx-background-color: transparent; -fx-text-fill: #9C9C9C; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-cursor: hand;"/>
         </VBox>
     </left>
     <center>
         <HBox fx:id="splitPane" spacing="20" style="-fx-background-color: #FFFFFF; -fx-padding: 30;">
             <VBox fx:id="leftPanel" spacing="12" prefWidth="450" HBox.hgrow="ALWAYS">
                 <Label fx:id="panelTitle" text="Tenants Directory" style="-fx-font-family: 'Georgia'; -fx-font-size: 26; -fx-font-weight: bold; -fx-text-fill: #0A0A0A; -fx-padding: 0 0 10 0; -fx-border-color: #0A0A0A; -fx-border-width: 0 0 2 0;"/>
-                <HBox spacing="10">
-                    <TextField fx:id="searchField" promptText="Search tenants..." HBox.hgrow="ALWAYS" style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-padding: 8; -fx-text-fill: #0A0A0A; -fx-font-family: 'Inter'; -fx-font-size: 12;"/>
-                </HBox>
-                <TableView fx:id="tenantTable" style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-font-family: 'Inter'; -fx-font-size: 12;" VBox.vgrow="ALWAYS">
+                <TextField fx:id="searchField" promptText="Search tenants..." style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-padding: 8;"/>
+                <TableView fx:id="tenantTable" VBox.vgrow="ALWAYS" style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 2;">
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                    </columnResizePolicy>
                     <columns>
-                        <TableColumn fx:id="colRoom" text="Room" prefWidth="100"/>
-                        <TableColumn fx:id="colName" text="Full Name" prefWidth="200"/>
-                        <TableColumn fx:id="colStatus" text="Lease Status" prefWidth="120"/>
+                        <TableColumn fx:id="colRoom" text="Room" />
+                        <TableColumn fx:id="colName" text="Full Name" />
+                        <TableColumn fx:id="colStatus" text="Lease Status" />
                     </columns>
                 </TableView>
             </VBox>
-            <VBox fx:id="rightPanel" spacing="16" prefWidth="350" style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-padding: 24;" fillWidth="true">
-                <Label fx:id="detailsHeader" text="Tenant Profile" style="-fx-font-family: 'Georgia'; -fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #0A0A0A; -fx-padding: 0 0 4 0; -fx-border-color: #0A0A0A; -fx-border-width: 0 0 1 0;"/>
-                <HBox spacing="10" alignment="CENTER_LEFT">
-                    <Label fx:id="profileRoomTag" text="R101" style="-fx-font-family: 'JetBrains Mono'; -fx-font-size: 13; -fx-font-weight: bold; -fx-background-color: #0A0A0A; -fx-text-fill: #FFFFFF; -fx-padding: 4 10; -fx-background-radius: 0;"/>
-                    <Label fx:id="profileName" text="Select a Tenant" style="-fx-font-family: 'Georgia'; -fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #0A0A0A;"/>
-                </HBox>
+            <VBox fx:id="rightPanel" spacing="16" prefWidth="350" style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-padding: 24;">
+                <Label text="Tenant Profile" style="-fx-font-family: 'Georgia'; -fx-font-size: 16; -fx-font-weight: bold;"/>
                 <VBox spacing="12">
-                    <VBox spacing="4">
-                        <Label fx:id="lblFullName" text="Full Name" style="-fx-font-family: 'JetBrains Mono'; -fx-font-size: 11; -fx-font-weight: bold; -fx-text-fill: #4A4A4A;"/>
-                        <TextField fx:id="editName" style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-padding: 8; -fx-text-fill: #0A0A0A; -fx-font-family: 'Inter'; -fx-font-size: 12;"/>
-                    </VBox>
-                    <VBox spacing="4">
-                        <Label fx:id="lblContact" text="Contact Info" style="-fx-font-family: 'JetBrains Mono'; -fx-font-size: 11; -fx-font-weight: bold; -fx-text-fill: #4A4A4A;"/>
-                        <TextField fx:id="editContact" style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-padding: 8; -fx-text-fill: #0A0A0A; -fx-font-family: 'Inter'; -fx-font-size: 12;"/>
-                    </VBox>
-                    <VBox spacing="4">
-                        <Label fx:id="lblMoveIn" text="Move-In Date" style="-fx-font-family: 'JetBrains Mono'; -fx-font-size: 11; -fx-font-weight: bold; -fx-text-fill: #4A4A4A;"/>
-                        <TextField fx:id="editMoveIn" style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-padding: 8; -fx-text-fill: #0A0A0A; -fx-font-family: 'Inter'; -fx-font-size: 12;"/>
-                    </VBox>
-                    <VBox spacing="4">
-                        <Label fx:id="lblLeaseStatus" text="Lease Status" style="-fx-font-family: 'JetBrains Mono'; -fx-font-size: 11; -fx-font-weight: bold; -fx-text-fill: #4A4A4A;"/>
-                        <ComboBox fx:id="comboLeaseStatus" maxWidth="Infinity" style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-font-family: 'Inter'; -fx-font-size: 12;"/>
-                    </VBox>
+                    <Label fx:id="lblFullName" text="Full Name" style="-fx-font-weight: bold;"/>
+                    <TextField fx:id="editName" style="-fx-border-color: #0A0A0A;"/>
+                    <Label fx:id="lblContact" text="Contact Info" style="-fx-font-weight: bold;"/>
+                    <TextField fx:id="editContact" style="-fx-border-color: #0A0A0A;"/>
+                    <Label fx:id="lblLeaseStatus" text="Lease Status" style="-fx-font-weight: bold;"/>
+                    <ComboBox fx:id="comboLeaseStatus" maxWidth="Infinity" style="-fx-border-color: #0A0A0A;"/>
                 </VBox>
                 <HBox spacing="10" alignment="CENTER">
-                    <Button fx:id="btnSave" text="Save Changes" onAction="#handleSaveTenant" HBox.hgrow="ALWAYS" maxWidth="Infinity" style="-fx-background-color: #0A0A0A; -fx-text-fill: #FFFFFF; -fx-background-radius: 0; -fx-border-width: 0; -fx-padding: 10 20; -fx-cursor: hand; -fx-font-size: 13; -fx-font-family: 'Inter'; -fx-font-weight: bold;"/>
-                    <Button fx:id="btnRemove" text="Terminate Lease" onAction="#handleRemoveTenant" HBox.hgrow="ALWAYS" maxWidth="Infinity" style="-fx-background-color: #FFFFFF; -fx-text-fill: #0A0A0A; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-background-radius: 0; -fx-padding: 8 18; -fx-cursor: hand; -fx-font-size: 13; -fx-font-family: 'Inter'; -fx-font-weight: bold;"/>
+                    <Button fx:id="btnSave" text="Save" onAction="#handleSaveTenant" maxWidth="Infinity" HBox.hgrow="ALWAYS" style="-fx-background-color: #0A0A0A; -fx-text-fill: #FFFFFF;"/>
+                    <Button fx:id="btnRemove" text="Remove" onAction="#handleRemoveTenant" maxWidth="Infinity" HBox.hgrow="ALWAYS" style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A;"/>
                 </HBox>
             </VBox>
         </HBox>

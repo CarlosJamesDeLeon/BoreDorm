@@ -1,13 +1,15 @@
 package com.boredom.boredorm.RoomControl;
 
-
 import com.boredom.boredorm.NavigationUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.event.ActionEvent;
+import com.boredom.boredorm.SessionManaging.SessionManager;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class RoomController implements Initializable {
@@ -29,6 +31,13 @@ public class RoomController implements Initializable {
     @FXML private VBox floor2Container;
     @FXML private Label floor2Label;
     @FXML private FlowPane floor2Grid;
+
+    // Counter Labels
+    @FXML private Label lblOccupiedCount;
+    @FXML private Label lblVacantCount;
+    @FXML private Label lblMaintenanceCount;
+
+    // Side Profile form mappings
     @FXML private VBox rightPanel;
     @FXML private Label detailsHeader;
     @FXML private Label detailsRoomTag;
@@ -43,8 +52,30 @@ public class RoomController implements Initializable {
     @FXML private ComboBox<String> comboStatus;
     @FXML private Button btnSave;
 
+    // Temporary storage holding state until RoomDAO is ready
+    private final Map<String, DormRoom> roomDatabase = new HashMap<>();
+    private String selectedRoomId = "R101";
+
+    // Lightweight inner class representing a single Room entity
+    private static class DormRoom {
+        String id;
+        String type;
+        String capacity;
+        String rate;
+        String status;
+
+        DormRoom(String id, String type, String capacity, String rate, String status) {
+            this.id = id;
+            this.type = type;
+            this.capacity = capacity;
+            this.rate = rate;
+            this.status = status;
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        // ID style injection bindings
         sidebar.setId("sidebar");
         sidebarTitle.setId("sidebarTitle");
         navDashboard.setId("navDashboard");
@@ -76,42 +107,112 @@ public class RoomController implements Initializable {
         lblRoomStatus.setId("lblRoomStatus");
         comboStatus.setId("comboStatus");
         btnSave.setId("btnSave");
+
         comboStatus.getItems().addAll("Occupied", "Vacant", "Under Maintenance");
+
+        // Initialize mock room repository data values matching generation conditions
+        initializeMockDatabase();
+
+        // Render buttons and assign click behaviors
         populateFloorGrids();
+
+        // Show initial room (R101) data context
+        selectRoom(selectedRoomId);
+
+        // Calculate counter metrics
+        updateCounters();
+    }
+
+    private void initializeMockDatabase() {
+        for (int i = 101; i <= 108; i++) {
+            String id = "R" + i;
+            String status = (i % 3 == 0) ? "Vacant" : "Occupied";
+            roomDatabase.put(id, new DormRoom(id, "Standard Studio", "2", "5000", status));
+        }
+        for (int i = 201; i <= 208; i++) {
+            String id = "R" + i;
+            String status = "Occupied";
+            if (i % 4 == 0) {
+                status = "Under Maintenance";
+            } else if (i % 2 == 0) {
+                status = "Vacant";
+            }
+            roomDatabase.put(id, new DormRoom(id, "Deluxe Suite", "4", "8500", status));
+        }
     }
 
     private void populateFloorGrids() {
         floor1Grid.getChildren().clear();
         floor2Grid.getChildren().clear();
+
         for (int i = 101; i <= 108; i++) {
-            Button btn = new Button("R" + i);
+            String id = "R" + i;
+            Button btn = new Button(id);
             btn.getStyleClass().add("room-tag-btn");
-            if (i % 3 == 0) {
-                btn.getStyleClass().add("room-tag-vacant");
-            } else {
-                btn.getStyleClass().add("room-tag-occupied");
-            }
+            btn.setOnAction(e -> selectRoom(id));
             floor1Grid.getChildren().add(btn);
         }
+
         for (int i = 201; i <= 208; i++) {
-            Button btn = new Button("R" + i);
+            String id = "R" + i;
+            Button btn = new Button(id);
             btn.getStyleClass().add("room-tag-btn");
-            if (i % 4 == 0) {
-                btn.getStyleClass().add("room-tag-maintenance");
-            } else if (i % 2 == 0) {
-                btn.getStyleClass().add("room-tag-vacant");
-            } else {
-                btn.getStyleClass().add("room-tag-occupied");
-            }
+            btn.setOnAction(e -> selectRoom(id));
             floor2Grid.getChildren().add(btn);
         }
     }
 
+    private void selectRoom(String roomId) {
+        selectedRoomId = roomId;
+        DormRoom room = roomDatabase.get(roomId);
+
+        if (room != null) {
+            detailsRoomTag.setText(room.id);
+            detailsStatus.setText(room.status);
+            editType.setText(room.type);
+            editCapacity.setText(room.capacity);
+            editRate.setText(room.rate);
+            comboStatus.setValue(room.status);
+        }
+    }
+
+    private void updateCounters() {
+        int occupied = 0;
+        int vacant = 0;
+        int maintenance = 0;
+
+        for (DormRoom room : roomDatabase.values()) {
+            switch (room.status) {
+                case "Occupied" -> occupied++;
+                case "Vacant" -> vacant++;
+                case "Under Maintenance" -> maintenance++;
+            }
+        }
+
+        lblOccupiedCount.setText(String.valueOf(occupied));
+        lblVacantCount.setText(String.valueOf(vacant));
+        lblMaintenanceCount.setText(String.valueOf(maintenance));
+    }
+
     @FXML
     private void handleSaveRoom(ActionEvent event) {
-        String stat = comboStatus.getValue();
-        if (stat != null) {
-            detailsStatus.setText(stat);
+        DormRoom room = roomDatabase.get(selectedRoomId);
+        if (room != null) {
+            room.type = editType.getText();
+            room.capacity = editCapacity.getText();
+            room.rate = editRate.getText();
+
+            String stat = comboStatus.getValue();
+            if (stat != null) {
+                room.status = stat;
+                detailsStatus.setText(stat);
+            }
+
+            // Refresh counts across top metrics bar instantly
+            updateCounters();
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Room configuration updated successfully!", ButtonType.OK);
+            alert.showAndWait();
         }
     }
 
@@ -142,6 +243,11 @@ public class RoomController implements Initializable {
 
     @FXML
     private void handleSignOut(ActionEvent event) {
+        // ✅ SERIALIZATION: Deletes session.dat file on logout
+        SessionManager.clearSession();
+        System.out.println("[Room] Session file deleted. User logged out.");
+
+        // Return back to the login screen gateway
         NavigationUtil.navigateTo(event, "/com/boredom/boredorm/login.fxml");
     }
 }

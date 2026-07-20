@@ -66,7 +66,7 @@ public class RegisterController implements Initializable {
 
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
-        User newUser = new User(0, username.trim(), hashedPassword, "tenant");
+        User newUser = new User(0, username.trim(), hashedPassword, "tenant", "Unassigned", "Pending");
 
         boolean success = userDAO.createUser(newUser);
 

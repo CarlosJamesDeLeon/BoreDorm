@@ -1,50 +1,104 @@
 package com.boredom.boredorm.SessionManaging;
 
+import com.boredom.boredorm.Models.User;
+
 import java.io.*;
-import java.nio.file.*;
-import java.util.Properties;
-import java.util.UUID;
 
-public class SessionManager {
-    private static final String FILE_NAME = ".boredorm_session";
-    private static final Path SESSION_FILE = Paths.get(System.getProperty("user.home"), FILE_NAME);
+/**
+ * SOLID Principle #1 — Single Responsibility Principle (SRP)
+ *
+ * SessionManager has ONE responsibility: manage the user's session lifecycle.
+ * It creates, reads, validates, and deletes the serialized session file (session.dat).
+ * It does NOT handle UI navigation, database queries, or business logic.
+ *
+ * Benefit: Changes to session storage (e.g., switching from file to DB) only
+ * affect this one class, not controllers or DAOs.
+ *
+ * SOLID Principle #2 — Dependency Inversion Principle (DIP)
+ * Implements ISessionManager so controllers depend on the interface abstraction,
+ * not this concrete class directly.
+ */
+public class SessionManager implements ISessionManager {
 
+    // Session file stored in the user's home directory for cross-platform support
+    private static final String SESSION_FILE = System.getProperty("user.home") + File.separator + "session.dat";
 
-    public static String generateToken() {
-        return UUID.randomUUID().toString();
-    }
-
-    // Saves the session token locally on the machine
-    public static void saveSessionLocally(String token) {
-        Properties props = new Properties();
-        props.setProperty("session_token", token);
-        try (OutputStream out = Files.newOutputStream(SESSION_FILE)) {
-            props.store(out, "BoreDorm User Session");
+    // -----------------------------------------------------------------------
+    // SAVE — Serializes the logged-in User object to session.dat
+    // -----------------------------------------------------------------------
+    public static void saveSession(User user) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(
+                new FileOutputStream(SESSION_FILE))) {
+            oos.writeObject(user);
+            System.out.println("[SessionManager] Session saved → " + SESSION_FILE);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("[SessionManager] Failed to save session: " + e.getMessage());
         }
     }
 
-    // Reads the local session token if it exists
-    public static String getLocalSessionToken() {
-        if (!Files.exists(SESSION_FILE)) {
+    // -----------------------------------------------------------------------
+    // LOAD — Deserializes User from session.dat; returns null if missing/corrupt
+    // -----------------------------------------------------------------------
+    public static User loadSession() {
+        File file = new File(SESSION_FILE);
+        if (!file.exists()) {
+            System.out.println("[SessionManager] No session file found.");
             return null;
         }
-        Properties props = new Properties();
-        try (InputStream in = Files.newInputStream(SESSION_FILE)) {
-            props.load(in);
-            return props.getProperty("session_token");
-        } catch (IOException e) {
+        try (ObjectInputStream ois = new ObjectInputStream(
+                new FileInputStream(file))) {
+            User user = (User) ois.readObject();
+            System.out.println("[SessionManager] Session loaded for: " + user.getUsername());
+            return user;
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("[SessionManager] Corrupted session file, clearing: " + e.getMessage());
+            clearSession();
             return null;
         }
     }
 
-    // Deletes the local file when the user logs out
+    // -----------------------------------------------------------------------
+    // IS ACTIVE — Check whether a valid session file exists
+    // -----------------------------------------------------------------------
+    public static boolean isSessionActive() {
+        return new File(SESSION_FILE).exists();
+    }
+
+    // -----------------------------------------------------------------------
+    // CLEAR — Deletes session.dat on logout
+    // -----------------------------------------------------------------------
+    public static void clearSession() {
+        File file = new File(SESSION_FILE);
+        if (file.exists()) {
+            boolean deleted = file.delete();
+            if (deleted) {
+                System.out.println("[SessionManager] Session file deleted (logout complete).");
+            } else {
+                System.err.println("[SessionManager] Warning: Could not delete session file.");
+            }
+        }
+    }
+
+    // -----------------------------------------------------------------------
+    // CONVENIENCE GETTERS — Read current user info without re-deserializing
+    // -----------------------------------------------------------------------
+    public static int getCurrentUserId() {
+        User user = loadSession();
+        return (user != null) ? user.getUserId() : 0;
+    }
+
+    public static String getCurrentUserRole() {
+        User user = loadSession();
+        return (user != null) ? user.getRole() : null;
+    }
+
+    public static String getCurrentUsername() {
+        User user = loadSession();
+        return (user != null) ? user.getUsername() : null;
+    }
+
+    // Legacy compatibility method
     public static void clearLocalSession() {
-        try {
-            Files.deleteIfExists(SESSION_FILE);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        clearSession();
     }
 }

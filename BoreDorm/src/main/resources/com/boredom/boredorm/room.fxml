@@ -18,7 +18,24 @@
         <HBox fx:id="splitPane" spacing="20" style="-fx-background-color: #FFFFFF; -fx-padding: 30;">
             <ScrollPane fx:id="leftScrollPane" fitToWidth="true" HBox.hgrow="ALWAYS" style="-fx-background-color: #FFFFFF; -fx-background: #FFFFFF; -fx-border-color: transparent;">
                 <VBox fx:id="roomsContainer" spacing="24">
-                    <Label fx:id="pageTitle" text="Rooms &amp; Occupancy" style="-fx-font-family: 'Georgia'; -fx-font-size: 26; -fx-font-weight: bold; -fx-text-fill: #0A0A0A; -fx-padding: 0 0 10 0; -fx-border-color: #0A0A0A; -fx-border-width: 0 0 2 0;"/>
+                    <VBox spacing="10">
+                        <Label fx:id="pageTitle" text="Rooms &amp; Occupancy" style="-fx-font-family: 'Georgia'; -fx-font-size: 26; -fx-font-weight: bold; -fx-text-fill: #0A0A0A; -fx-padding: 0 0 10 0; -fx-border-color: #0A0A0A; -fx-border-width: 0 0 2 0;"/>
+                        <!-- Real-time Summary Cards Layout Container -->
+                        <HBox spacing="20" style="-fx-padding: 5 0 10 0;">
+                            <VBox style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 1; -fx-padding: 10; -fx-pref-width: 140;">
+                                <Label text="Occupied Rooms" style="-fx-font-family: 'JetBrains Mono'; -fx-font-size: 10; -fx-text-fill: #4A4A4A;"/>
+                                <Label fx:id="lblOccupiedCount" text="0" style="-fx-font-family: 'Georgia'; -fx-font-size: 18; -fx-font-weight: bold;"/>
+                            </VBox>
+                            <VBox style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 1; -fx-padding: 10; -fx-pref-width: 140;">
+                                <Label text="Vacant Rooms" style="-fx-font-family: 'JetBrains Mono'; -fx-font-size: 10; -fx-text-fill: #4A4A4A;"/>
+                                <Label fx:id="lblVacantCount" text="0" style="-fx-font-family: 'Georgia'; -fx-font-size: 18; -fx-font-weight: bold;"/>
+                            </VBox>
+                            <VBox style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 1; -fx-padding: 10; -fx-pref-width: 140;">
+                                <Label text="Maintenance" style="-fx-font-family: 'JetBrains Mono'; -fx-font-size: 10; -fx-text-fill: #4A4A4A;"/>
+                                <Label fx:id="lblMaintenanceCount" text="0" style="-fx-font-family: 'Georgia'; -fx-font-size: 18; -fx-font-weight: bold;"/>
+                            </VBox>
+                        </HBox>
+                    </VBox>
                     <VBox fx:id="floor1Container" spacing="12">
                         <Label fx:id="floor1Label" text="First Floor" style="-fx-font-family: 'Georgia'; -fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #0A0A0A; -fx-padding: 0 0 4 0; -fx-border-color: #0A0A0A; -fx-border-width: 0 0 1 0;"/>
                         <FlowPane fx:id="floor1Grid" hgap="12" vgap="12"/>

@@ -1,6 +1,7 @@
 package com.boredom.boredorm.MaintenanceControl;
 
 import com.boredom.boredorm.NavigationUtil;
+import com.boredom.boredorm.SessionManaging.SessionManager;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -81,6 +82,9 @@ public class MaintenanceController implements Initializable {
 
     @FXML
     private void handleSignOut(ActionEvent event) {
+        // ✅ SERIALIZATION: Delete session.dat on sign out
+        SessionManager.clearSession();
+        System.out.println("[Maintenance] Session file deleted. User logged out.");
         NavigationUtil.navigateTo(event, "/com/boredom/boredorm/login.fxml");
     }
 }
