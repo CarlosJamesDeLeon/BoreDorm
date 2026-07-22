@@ -8,7 +8,7 @@ BoreDorm is a modern, comprehensive dormitory management software system designe
 
 The system architecture and behavioral flows are modeled below using standardized UML diagrams (Class, Use Case, Activity, and Sequence Diagrams). 
 
-> **Tip for app.diagrams.net (Draw.io):** You can also open [app.diagrams.net](https://app.diagrams.net), click **Arrange > Insert > Advanced > Mermaid**, paste any of the Mermaid code blocks below, and Draw.io will automatically render the clean, straight-line diagram for export!
+
 
 ### 1. 📑 Class Diagram (System Structure & Design Patterns)
 
