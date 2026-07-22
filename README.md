@@ -1,16 +1,25 @@
 # BoreDorm Management System
 
-BoreDorm is a modern, comprehensive dormitory management software system designed to streamline administrative operations and elevate the tenant experience. It provides features for administrators to manage rooms, monitor tenants, track billing, and review logs, while offering tenants a dedicated dashboard to view their lease details and billing status.
+BoreDorm is a modern, comprehensive dormitory management software system designed to streamline administrative operations and elevate the tenant experience. It provides features for administrators to manage rooms, monitor tenants, track billing, and review logs, while offering tenants a dedicated dashboard to view their lease details, room info, and submit maintenance requests.
 
 ---
 
 ## 📊 System UML Diagrams
 
-The system architecture and behavioral flows are modeled below using standardized UML diagrams (Class, Use Case, Activity, and Sequence Diagrams). All diagrams are formatted with **straight, orthogonal lines** and standard UML notation for visual clarity.
+The system architecture and behavioral flows are modeled below using standardized UML diagrams (Class, Use Case, Activity, and Sequence Diagrams). All diagrams are formatted with **straight, orthogonal lines** and standard UML notation. 
 
-> **Tip for app.diagrams.net (Draw.io):** You can open [app.diagrams.net](https://app.diagrams.net), click **Arrange > Insert > Advanced > Mermaid**, paste any of the Mermaid code blocks below, and Draw.io will automatically generate clean vector graphics!
+Click **"View Diagram"** under any section to expand and inspect the diagram.
+
+> 💡 **Tip for app.diagrams.net (Draw.io):** You can open [app.diagrams.net](https://app.diagrams.net), click **Arrange > Insert > Advanced > Mermaid**, paste any of the Mermaid code blocks below, and Draw.io will automatically generate clean vector graphics!
+
+---
 
 ### 1. 📑 Class Diagram (System Architecture & Design Patterns)
+
+<details>
+<summary><b>🔍 Click to View Class Diagram</b></summary>
+
+<br>
 
 ```mermaid
 %%{init: {'theme': 'dark', 'flowchart': {'curve': 'straight'}, 'class': {'curve': 'straight'}}}%%
@@ -32,15 +41,26 @@ classDiagram
 
     class TenantDashboardController {
         +initialize() void
+        +handleSubmitRequest(ActionEvent event) void
         +handleLogout(ActionEvent event) void
+    }
+
+    class MaintenanceController {
+        +initialize(URL url, ResourceBundle rb) void
+        +handleUpdateStatus(ActionEvent event) void
     }
 
     class DormitoryFacade {
         -DormitoryFacade instance$
         -UserDAO userDAO
+        -MaintenanceRequestDAO maintenanceDAO
         +getInstance() DormitoryFacade$
         +authenticate(String username, String password) User
         +registerTenant(String username, String rawPassword) boolean
+        +submitMaintenanceRequest(MaintenanceRequest request) boolean
+        +getMyMaintenanceRequests() List~MaintenanceRequest~
+        +getAllMaintenanceRequests() List~MaintenanceRequest~
+        +updateMaintenanceStatus(int requestId, String newStatus, String staff) boolean
         +logout() void
         +isSessionActive() boolean
         +getActiveUser() User
@@ -106,6 +126,21 @@ classDiagram
         +getAllUsers() List~User~
     }
 
+    class MaintenanceRequestDAO {
+        <<interface>>
+        +submitRequest(MaintenanceRequest request) boolean
+        +getRequestsByUserId(int tenantUserId) List~MaintenanceRequest~
+        +getAllRequests() List~MaintenanceRequest~
+        +updateRequestStatus(int requestId, String status, String staff) boolean
+    }
+
+    class MaintenanceRequestDAOImpl {
+        +submitRequest(MaintenanceRequest request) boolean
+        +getRequestsByUserId(int tenantUserId) List~MaintenanceRequest~
+        +getAllRequests() List~MaintenanceRequest~
+        +updateRequestStatus(int requestId, String status, String staff) boolean
+    }
+
     class UserFactory {
         +createTenant(String username, String hashedPassword) User$
         +createAdmin(String username, String hashedPassword) User$
@@ -125,25 +160,27 @@ classDiagram
         -String leaseStatus
     }
 
-    class Tenant {
-        -int tenantId
-        -String firstName
-        -String lastName
-    }
-
-    class ActivityLog {
-        -String tenantName
-        -String actionLogged
-        -String timestamp
+    class MaintenanceRequest {
+        -int requestId
+        -int tenantUserId
+        -String tenantUsername
+        -String roomNumber
+        -String issueType
+        -String description
+        -String status
+        -String dateFiled
+        -String assignedStaff
     }
 
     HelloApplication --> DormitoryFacade
     LoginController --> DormitoryFacade
     DashboardController --> DormitoryFacade
     TenantDashboardController --> DormitoryFacade
+    MaintenanceController --> DormitoryFacade
 
     DormitoryFacade --> SessionManager
     DormitoryFacade --> UserDAO
+    DormitoryFacade --> MaintenanceRequestDAO
     DormitoryFacade --> UserFactory
     DormitoryFacade --> RoleAccessContext
 
@@ -153,14 +190,23 @@ classDiagram
 
     ISessionManager <|.. SessionManager
     UserDAO <|.. UserDAOImpl
+    MaintenanceRequestDAO <|.. MaintenanceRequestDAOImpl
 
     UserFactory ..> User : Creates
     Serializable <|.. User
+    Serializable <|.. MaintenanceRequest
 ```
+
+</details>
 
 ---
 
 ### 2. 🎯 Use Case Diagram (System Interactions & Boundaries)
+
+<details>
+<summary><b>🔍 Click to View Use Case Diagram</b></summary>
+
+<br>
 
 ```mermaid
 %%{init: {'theme': 'dark', 'flowchart': {'curve': 'straight'}}}%%
@@ -179,7 +225,9 @@ flowchart LR
         UC6(("UC-6: Record Invoices & Payments"))
         UC7(("UC-7: Audit Activity Logs"))
         UC8(("UC-8: View Tenant Profile"))
-        UC9(("UC-9: Log Out & Delete Session"))
+        UC9(("UC-9: Submit Maintenance Request"))
+        UC10(("UC-10: Review & Resolve Maintenance"))
+        UC11(("UC-11: Log Out & Delete Session"))
     end
 
     Admin ---> UC1
@@ -188,20 +236,29 @@ flowchart LR
     Admin ---> UC5
     Admin ---> UC6
     Admin ---> UC7
-    Admin ---> UC9
+    Admin ---> UC10
+    Admin ---> UC11
 
     Tenant ---> UC1
     Tenant ---> UC2
     Tenant ---> UC8
     Tenant ---> UC9
+    Tenant ---> UC11
 
     UC1 -.->|Includes| UC3
-    UC9 -.->|Deletes| UC3
+    UC11 -.->|Deletes| UC3
 ```
+
+</details>
 
 ---
 
-### 3. 🔄 Activity Diagram (Authentication & Session Lifecycle)
+### 3. 🔄 Activity Diagram (Authentication, Session & Maintenance Flow)
+
+<details>
+<summary><b>🔍 Click to View Activity Diagram</b></summary>
+
+<br>
 
 ```mermaid
 %%{init: {'theme': 'dark', 'flowchart': {'curve': 'straight'}}}%%
@@ -227,21 +284,29 @@ flowchart TD
     SaveSession ---> ResolveStrategy[Initialize RoleAccessContext Strategy]
     ResolveStrategy ---> RouteDashboard[Navigate to Dashboard View]
 
-    RouteAdmin ---> MainNav[User Interacts with Management Features]
-    RouteTenant ---> MainNav
-    RouteDashboard ---> MainNav
+    RouteAdmin ---> AdminAction[Manage Rooms, Billing & Update Maintenance Requests]
+    RouteTenant ---> TenantAction[View Profile & Submit Maintenance Request]
 
-    MainNav ---> UserLogout{Click Sign Out?}
-    UserLogout --->|No| MainNav
+    AdminAction ---> UserLogout{Click Sign Out?}
+    TenantAction ---> UserLogout
+
+    UserLogout --->|No| MainLoop[Continue Operations]
     UserLogout --->|Yes| CallLogout[DormitoryFacade.logout]
     CallLogout ---> DeleteFile[Delete session.dat from disk]
     DeleteFile ---> RedirectLogin[Redirect to Login Screen]
     RedirectLogin ---> End([End Session])
 ```
 
+</details>
+
 ---
 
 ### 4. ⏱️ Sequence Diagram (User Login & Session Creation Flow)
+
+<details>
+<summary><b>🔍 Click to View Sequence Diagram</b></summary>
+
+<br>
 
 ```mermaid
 sequenceDiagram
@@ -268,6 +333,8 @@ sequenceDiagram
     NV-->>User: Display Dashboard View
 ```
 
+</details>
+
 ---
 
 ## 🌟 Major Features
@@ -276,8 +343,9 @@ sequenceDiagram
 2. **Interactive Room Directory**: Graphical and searchable view of dormitory rooms grouped by floors, tracking room types, rates, capacity, and current availability status.
 3. **Tenant & Lease Tracking**: Managed list of all active tenants, room numbers, and lease status.
 4. **Billing & Invoice Logging**: Easy entry of tenant invoices and payment posting via multiple channels (GCash, Bank Transfer, Cash, Credit Card).
-5. **Real-time Activity Logs**: Live dashboard feed logging system audits and check-in activities.
-6. **Tenant Portal**: Dedicated interface for occupants to verify their registered room profile, roommate info, and lease conditions.
+5. **Tenant ↔ Admin Maintenance System**: Tenants can log into their portal to submit maintenance requests (plumbing, electrical, AC, etc.) with real-time status updates from admins.
+6. **Real-time Activity Logs**: Live dashboard feed logging system audits and check-in activities.
+7. **Tenant Portal**: Dedicated interface for occupants to verify their registered room profile and manage maintenance issues.
 
 ---
 
@@ -292,8 +360,8 @@ The system incorporates **Creational**, **Structural**, and **Behavioral** softw
 
 ### 2. 🏛️ Structural Pattern: Facade Pattern
 * **Class Involved**: `DormitoryFacade` (`com.boredom.boredorm.Facade.DormitoryFacade`)
-* **Implementation**: Provides a unified, high-level interface to the complex subsystem of DAOs (`UserDAO`), Password Hashing (`BCrypt`), Session Serialization (`SessionManager`), and Permission Strategies (`RoleAccessContext`).
-* **Benefits**: Simplifies controller implementations. `LoginController` and `RegisterController` interact with a single `DormitoryFacade.getInstance().authenticate()` or `registerTenant()` method rather than orchestrating multi-step database and security calls manually.
+* **Implementation**: Provides a unified, high-level interface to the complex subsystem of DAOs (`UserDAO`, `MaintenanceRequestDAO`), Password Hashing (`BCrypt`), Session Serialization (`SessionManager`), and Permission Strategies (`RoleAccessContext`).
+* **Benefits**: Simplifies controller implementations. `LoginController`, `RegisterController`, and `TenantDashboardController` interact with a single `DormitoryFacade.getInstance()` method rather than orchestrating multi-step database and security calls manually.
 
 ### 3. 🎯 Behavioral Pattern: Strategy Pattern
 * **Classes & Interfaces Involved**:
@@ -324,9 +392,9 @@ To validate and maintain session state across the JavaFX application, we impleme
 * **Benefit**: High maintainability. If the session storage format changes (e.g., from local file to database or encrypted registry), only the `SessionManager` code is modified, without breaking user models or database access logic.
 
 ### 2. Dependency Inversion Principle (DIP)
-* **Classes & Interfaces Involved**: `ISessionManager` interface and `SessionManager` concrete implementation.
-* **Implementation**: Controllers interact with the session management mechanism through the `ISessionManager` interface rather than directly instantiating or depending on a concrete implementation.
-* **Benefit**: Weak coupling. This separates page navigation and presentation concerns from session management mechanisms. It also allows developers to easily mock sessions for testing or swap implementations entirely.
+* **Classes & Interfaces Involved**: `ISessionManager` / `UserDAO` / `MaintenanceRequestDAO` interfaces and their concrete implementations.
+* **Implementation**: Controllers interact with data access and session mechanisms through interfaces rather than directly instantiating or depending on concrete implementations.
+* **Benefit**: Weak coupling. This separates presentation concerns from data layer mechanisms.
 
 ---
 
