@@ -5,122 +5,210 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.boredom.boredorm.TenantDashboardControl.TenantDashboardController">
-    <!-- Left Sidebar: Sleek Dark Minimalist -->
+<BorderPane prefHeight="720.0" prefWidth="1050.0"
+            style="-fx-background-color: #F4F6F9;"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.boredom.boredorm.TenantDashboardControl.TenantDashboardController">
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- LEFT SIDEBAR                                            -->
+    <!-- ═══════════════════════════════════════════════════════ -->
     <left>
-        <VBox prefWidth="220.0" style="-fx-background-color: #121212; -fx-padding: 30 0 30 0;" BorderPane.alignment="CENTER">
+        <VBox prefWidth="230.0" style="-fx-background-color: #0A0A0A; -fx-padding: 30 0 30 0;"
+              BorderPane.alignment="CENTER">
             <children>
-                <!-- Logo/Brand -->
+                <!-- Brand -->
                 <Label text="BoreDorm" textFill="WHITE">
-                    <font>
-                        <Font name="Georgia Bold" size="22.0" />
-                    </font>
-                    <VBox.margin>
-                        <Insets bottom="40.0" left="25.0" />
-                    </VBox.margin>
+                    <font><Font name="Georgia Bold" size="22.0"/></font>
+                    <VBox.margin><Insets bottom="10.0" left="25.0"/></VBox.margin>
+                </Label>
+                <Label text="Tenant Portal" textFill="#888888">
+                    <font><Font size="11.0"/></font>
+                    <VBox.margin><Insets bottom="35.0" left="25.0"/></VBox.margin>
                 </Label>
 
-                <!-- Navigation Items -->
-                <Button maxWidth="Infinity" mnemonicParsing="false" prefHeight="45.0" style="-fx-background-color: #222222; -fx-text-fill: #FFFFFF; -fx-alignment: center-left; -fx-padding: 0 0 0 25; -fx-background-radius: 0;" text="My Profile">
-                    <font>
-                        <Font name="System Bold" size="13.0" />
-                    </font>
+                <!-- My Profile (active) -->
+                <Button maxWidth="Infinity" mnemonicParsing="false"
+                        prefHeight="46.0" text="  My Profile"
+                        style="-fx-background-color: #1E1E1E; -fx-text-fill: #FFFFFF;
+                               -fx-alignment: center-left; -fx-padding: 0 0 0 20;
+                               -fx-background-radius: 0; -fx-border-color: transparent transparent transparent #C9A84C; -fx-border-width: 0 0 0 3;">
+                    <font><Font name="System Bold" size="13.0"/></font>
                 </Button>
 
-                <!-- Spacer pushing Sign Out to the absolute bottom -->
-                <Region VBox.vgrow="ALWAYS" />
+                <Region VBox.vgrow="ALWAYS"/>
 
-                <!-- Sign Out Button (Now fully visible) -->
-                <Button fx:id="signOutButton" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleLogout" prefHeight="45.0" style="-fx-background-color: transparent; -fx-text-fill: #888888; -fx-alignment: center-left; -fx-padding: 0 0 0 25; -fx-cursor: hand;" text="Sign Out">
-                    <font>
-                        <Font size="13.0" />
-                    </font>
+                <!-- Sign Out -->
+                <Button fx:id="signOutButton" maxWidth="Infinity" mnemonicParsing="false"
+                        onAction="#handleLogout" prefHeight="44.0" text="  Sign Out"
+                        style="-fx-background-color: transparent; -fx-text-fill: #666666;
+                               -fx-alignment: center-left; -fx-padding: 0 0 0 20; -fx-cursor: hand;">
+                    <font><Font size="13.0"/></font>
                 </Button>
             </children>
         </VBox>
     </left>
 
-    <!-- Main Content Area: Clean Professional Aesthetic -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- MAIN CONTENT                                           -->
+    <!-- ═══════════════════════════════════════════════════════ -->
     <center>
-        <AnchorPane style="-fx-background-color: #FFFFFF;" BorderPane.alignment="CENTER">
-            <padding>
-                <Insets bottom="40.0" left="50.0" right="50.0" top="50.0" />
-            </padding>
-            <children>
-                <VBox spacing="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <children>
-                        <!-- Page Title -->
-                        <VBox spacing="5.0">
+        <ScrollPane fitToWidth="true" style="-fx-background-color: #F4F6F9; -fx-border-color: transparent;"
+                    BorderPane.alignment="CENTER">
+            <content>
+                <VBox spacing="24.0" style="-fx-padding: 40 40 40 40;">
+
+                    <!-- ── PAGE HEADER ─────────────────────────── -->
+                    <VBox spacing="4.0">
+                        <Label text="My Tenant Portal" style="-fx-text-fill: #0A0A0A;">
+                            <font><Font name="Georgia Bold" size="26.0"/></font>
+                        </Label>
+                        <Label text="View your profile details and submit maintenance requests." textFill="#777777">
+                            <font><Font size="13.0"/></font>
+                        </Label>
+                    </VBox>
+
+                    <!-- ── PROFILE CARD ───────────────────────── -->
+                    <VBox spacing="0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 8;
+                                            -fx-border-color: #E2E8F0; -fx-border-width: 1; -fx-border-radius: 8;
+                                            -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 8, 0, 0, 2);">
+                        <!-- Card Header -->
+                        <HBox style="-fx-background-color: #0A0A0A; -fx-background-radius: 8 8 0 0; -fx-padding: 15 20;">
+                            <Label text="Account Information" textFill="WHITE">
+                                <font><Font name="System Bold" size="14.0"/></font>
+                            </Label>
+                        </HBox>
+
+                        <GridPane vgap="0" hgap="0" style="-fx-padding: 0;">
+                            <columnConstraints>
+                                <ColumnConstraints prefWidth="200.0"/>
+                                <ColumnConstraints hgrow="ALWAYS"/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="56.0"/>
+                                <RowConstraints minHeight="56.0"/>
+                                <RowConstraints minHeight="56.0"/>
+                            </rowConstraints>
                             <children>
-                                <Label text="My Tenant Portal" textFill="#121212">
-                                    <font>
-                                        <Font name="Georgia Bold" size="28.0" />
-                                    </font>
+                                <!-- Row 1: Username -->
+                                <Label text="Username" style="-fx-text-fill: #777777; -fx-padding: 0 0 0 20; -fx-border-color: #F0F0F0; -fx-border-width: 0 0 1 0;"
+                                       GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                    <font><Font name="System Bold" size="13.0"/></font>
                                 </Label>
-                                <Label text="Manage your accommodations and profile details" textFill="#666666">
-                                    <font>
-                                        <Font size="13.0" />
-                                    </font>
+                                <Label fx:id="usernameLabel" text="Loading..." style="-fx-text-fill: #C9A84C; -fx-padding: 0 0 0 20; -fx-border-color: #F0F0F0; -fx-border-width: 0 0 1 0;"
+                                       GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                    <font><Font name="System Bold" size="13.0"/></font>
+                                </Label>
+                                <!-- Row 2: Room -->
+                                <Label text="Room Assignment" style="-fx-text-fill: #777777; -fx-padding: 0 0 0 20; -fx-border-color: #F0F0F0; -fx-border-width: 0 0 1 0;"
+                                       GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                    <font><Font name="System Bold" size="13.0"/></font>
+                                </Label>
+                                <Label fx:id="roomLabel" text="Loading..." style="-fx-text-fill: #0A0A0A; -fx-padding: 0 0 0 20; -fx-border-color: #F0F0F0; -fx-border-width: 0 0 1 0;"
+                                       GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <font><Font size="13.0"/></font>
+                                </Label>
+                                <!-- Row 3: Lease Status -->
+                                <Label text="Lease Status" style="-fx-text-fill: #777777; -fx-padding: 0 0 0 20;"
+                                       GridPane.columnIndex="0" GridPane.rowIndex="2">
+                                    <font><Font name="System Bold" size="13.0"/></font>
+                                </Label>
+                                <Label fx:id="statusLabel" text="Loading..." style="-fx-text-fill: #27ae60; -fx-padding: 0 0 0 20;"
+                                       GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                    <font><Font name="System Bold" size="13.0"/></font>
                                 </Label>
                             </children>
+                        </GridPane>
+                    </VBox>
+
+                    <!-- ── MAINTENANCE REQUEST FORM ──────────── -->
+                    <VBox spacing="0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 8;
+                                            -fx-border-color: #E2E8F0; -fx-border-width: 1; -fx-border-radius: 8;
+                                            -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 8, 0, 0, 2);">
+                        <!-- Card Header -->
+                        <HBox style="-fx-background-color: #0A0A0A; -fx-background-radius: 8 8 0 0; -fx-padding: 15 20;" alignment="CENTER_LEFT" spacing="10">
+                            <Label text="Submit Maintenance Request" textFill="WHITE">
+                                <font><Font name="System Bold" size="14.0"/></font>
+                            </Label>
+                            <Label text="Notify admin of any issue in your room" textFill="#888888">
+                                <font><Font size="12.0"/></font>
+                            </Label>
+                        </HBox>
+
+                        <VBox spacing="16.0" style="-fx-padding: 24;">
+                            <HBox spacing="20.0" alignment="CENTER_LEFT">
+                                <VBox spacing="6.0">
+                                    <Label text="Issue Type" style="-fx-text-fill: #555555;">
+                                        <font><Font name="System Bold" size="12.0"/></font>
+                                    </Label>
+                                    <ComboBox fx:id="comboIssueType" prefWidth="240.0" prefHeight="36.0"
+                                              promptText="Select issue type..."
+                                              style="-fx-background-color: #FFFFFF; -fx-border-color: #D1D5DB;
+                                                     -fx-border-width: 1; -fx-border-radius: 4; -fx-background-radius: 4;
+                                                     -fx-font-size: 13;"/>
+                                </VBox>
+                            </HBox>
+
+                            <VBox spacing="6.0">
+                                <Label text="Description" style="-fx-text-fill: #555555;">
+                                    <font><Font name="System Bold" size="12.0"/></font>
+                                </Label>
+                                <TextArea fx:id="txtDescription" prefHeight="90.0" prefRowCount="4"
+                                          promptText="Describe the issue in detail (e.g., leaking pipe under sink since Monday)..."
+                                          wrapText="true"
+                                          style="-fx-background-color: #FFFFFF; -fx-border-color: #D1D5DB;
+                                                 -fx-border-width: 1; -fx-border-radius: 4; -fx-background-radius: 4;
+                                                 -fx-font-size: 13; -fx-padding: 8;"/>
+                            </VBox>
+
+                            <HBox spacing="12.0" alignment="CENTER_LEFT">
+                                <Button fx:id="btnSubmitRequest" mnemonicParsing="false"
+                                        onAction="#handleSubmitRequest"
+                                        text="Submit Request"
+                                        prefHeight="38.0" prefWidth="160.0"
+                                        style="-fx-background-color: #0A0A0A; -fx-text-fill: #FFFFFF;
+                                               -fx-background-radius: 4; -fx-cursor: hand; -fx-font-size: 13;">
+                                    <font><Font name="System Bold" size="13.0"/></font>
+                                </Button>
+                                <Label fx:id="lblSubmitStatus" text="" visible="false"
+                                       style="-fx-font-size: 12;"/>
+                            </HBox>
                         </VBox>
+                    </VBox>
 
-                        <!-- Account Details Card -->
-                        <VBox spacing="20.0" style="-fx-border-color: #EAEAEA; -fx-border-width: 1; -fx-background-color: #FAFAFA; -fx-padding: 30; -fx-border-radius: 4; -fx-background-radius: 4;">
-                            <children>
-                                <GridPane vgap="18.0" hgap="20.0">
-                                    <columnConstraints>
-                                        <ColumnConstraints prefWidth="150.0" />
-                                        <ColumnConstraints hgrow="ALWAYS" />
-                                    </columnConstraints>
-                                    <rowConstraints>
-                                        <RowConstraints minHeight="25.0" />
-                                        <RowConstraints minHeight="25.0" />
-                                        <RowConstraints minHeight="25.0" />
-                                    </rowConstraints>
-                                    <children>
-                                        <!-- Row 1 -->
-                                        <Label text="Room Assignment" textFill="#555555" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                                            <font>
-                                                <Font name="System Bold" size="14.0" />
-                                            </font>
-                                        </Label>
-                                        <Label fx:id="roomLabel" text="Loading..." textFill="#121212" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                                            <font>
-                                                <Font size="14.0" />
-                                            </font>
-                                        </Label>
+                    <!-- ── MY SUBMITTED REQUESTS TABLE ──────── -->
+                    <VBox spacing="0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 8;
+                                            -fx-border-color: #E2E8F0; -fx-border-width: 1; -fx-border-radius: 8;
+                                            -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 8, 0, 0, 2);">
+                        <HBox style="-fx-background-color: #0A0A0A; -fx-background-radius: 8 8 0 0; -fx-padding: 15 20;" alignment="CENTER_LEFT" spacing="12">
+                            <Label text="My Submitted Requests" textFill="WHITE">
+                                <font><Font name="System Bold" size="14.0"/></font>
+                            </Label>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <Button mnemonicParsing="false" onAction="#handleRefreshRequests" text="↻ Refresh"
+                                    style="-fx-background-color: #2a2a2a; -fx-text-fill: #CCCCCC;
+                                           -fx-background-radius: 4; -fx-cursor: hand; -fx-font-size: 12;"/>
+                        </HBox>
 
-                                        <!-- Row 2 -->
-                                        <Label text="Username" textFill="#555555" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                                            <font>
-                                                <Font name="System Bold" size="14.0" />
-                                            </font>
-                                        </Label>
-                                        <Label fx:id="usernameLabel" text="Loading..." textFill="#121212" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                            <font>
-                                                <Font size="14.0" />
-                                            </font>
-                                        </Label>
+                        <TableView fx:id="myRequestsTable" prefHeight="220.0"
+                                   style="-fx-background-color: #FFFFFF; -fx-border-color: transparent; -fx-font-size: 12;"
+                                   VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colIssueType" text="Issue Type" prefWidth="140"/>
+                                <TableColumn fx:id="colDescription" text="Description" prefWidth="320"/>
+                                <TableColumn fx:id="colDateFiled" text="Date Filed" prefWidth="160"/>
+                                <TableColumn fx:id="colStatus" text="Status" prefWidth="110"/>
+                                <TableColumn fx:id="colAssigned" text="Assigned Staff" prefWidth="140"/>
+                            </columns>
+                            <placeholder>
+                                <Label text="No maintenance requests submitted yet." style="-fx-text-fill: #AAAAAA; -fx-font-size: 13;"/>
+                            </placeholder>
+                        </TableView>
+                    </VBox>
 
-                                        <!-- Row 3 -->
-                                        <Label text="Lease Status" textFill="#555555" GridPane.columnIndex="0" GridPane.rowIndex="2">
-                                            <font>
-                                                <Font name="System Bold" size="14.0" />
-                                            </font>
-                                        </Label>
-                                        <Label fx:id="statusLabel" text="Loading..." textFill="#121212" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                            <font>
-                                                <Font name="System Bold" size="14.0" />
-                                            </font>
-                                        </Label>
-                                    </children>
-                                </GridPane>
-                            </children>
-                        </VBox>
-                    </children>
                 </VBox>
-            </children>
-        </AnchorPane>
+            </content>
+        </ScrollPane>
     </center>
 </BorderPane>

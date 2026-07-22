@@ -1,36 +1,168 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.boredom.boredorm.MaintenanceControl.MaintenanceController" prefWidth="1024" prefHeight="768" style="-fx-background-color: #FFFFFF;">
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.boredom.boredorm.MaintenanceControl.MaintenanceController"
+            prefWidth="1100" prefHeight="768"
+            style="-fx-background-color: #F4F6F9;">
+
+    <!-- ══════════════════════════════════════════════════ -->
+    <!-- LEFT SIDEBAR                                       -->
+    <!-- ══════════════════════════════════════════════════ -->
     <left>
-        <VBox fx:id="sidebar" spacing="15" prefWidth="200" style="-fx-background-color: #0A0A0A; -fx-padding: 20;">
-            <Label fx:id="sidebarTitle" text="BoreDorm" style="-fx-font-family: 'Georgia'; -fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #FFFFFF; -fx-padding: 0 0 20 0;"/>
-            <Button fx:id="navDashboard" text="Dashboard" onAction="#handleNavDashboard" style="-fx-background-color: transparent; -fx-text-fill: #9C9C9C; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-font-family: 'Inter'; -fx-cursor: hand;"/>
-            <Button fx:id="navTenants" text="Tenants" onAction="#handleNavTenants" style="-fx-background-color: transparent; -fx-text-fill: #9C9C9C; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-font-family: 'Inter'; -fx-cursor: hand;"/>
-            <Button fx:id="navRooms" text="Rooms" onAction="#handleNavRooms" style="-fx-background-color: transparent; -fx-text-fill: #9C9C9C; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-font-family: 'Inter'; -fx-cursor: hand;"/>
-            <Button fx:id="navBilling" text="Billing" onAction="#handleNavBilling" style="-fx-background-color: transparent; -fx-text-fill: #9C9C9C; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-font-family: 'Inter'; -fx-cursor: hand;"/>
-            <Button fx:id="navMaintenance" text="Maintenance" onAction="#handleNavMaintenance" style="-fx-background-color: #FFFFFF; -fx-text-fill: #0A0A0A; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-font-weight: bold; -fx-font-family: 'Inter'; -fx-cursor: hand;"/>
+        <VBox fx:id="sidebar" spacing="4" prefWidth="210"
+              style="-fx-background-color: #0A0A0A; -fx-padding: 28 0 28 0;">
+            <Label fx:id="sidebarTitle" text="BoreDorm"
+                   style="-fx-font-family: 'Georgia'; -fx-font-size: 20; -fx-font-weight: bold;
+                          -fx-text-fill: #FFFFFF; -fx-padding: 0 0 6 25;"/>
+            <Label text="Admin Panel"
+                   style="-fx-text-fill: #666666; -fx-font-size: 11; -fx-padding: 0 0 24 25;"/>
+
+            <Button fx:id="navDashboard" text="  Dashboard" onAction="#handleNavDashboard"
+                    style="-fx-background-color: transparent; -fx-text-fill: #9C9C9C;
+                           -fx-alignment: CENTER_LEFT; -fx-padding: 12 15; -fx-font-size: 13;
+                           -fx-cursor: hand;" maxWidth="Infinity"/>
+            <Button fx:id="navTenants" text="  Tenants" onAction="#handleNavTenants"
+                    style="-fx-background-color: transparent; -fx-text-fill: #9C9C9C;
+                           -fx-alignment: CENTER_LEFT; -fx-padding: 12 15; -fx-font-size: 13;
+                           -fx-cursor: hand;" maxWidth="Infinity"/>
+            <Button fx:id="navRooms" text="  Rooms" onAction="#handleNavRooms"
+                    style="-fx-background-color: transparent; -fx-text-fill: #9C9C9C;
+                           -fx-alignment: CENTER_LEFT; -fx-padding: 12 15; -fx-font-size: 13;
+                           -fx-cursor: hand;" maxWidth="Infinity"/>
+            <Button fx:id="navBilling" text="  Billing" onAction="#handleNavBilling"
+                    style="-fx-background-color: transparent; -fx-text-fill: #9C9C9C;
+                           -fx-alignment: CENTER_LEFT; -fx-padding: 12 15; -fx-font-size: 13;
+                           -fx-cursor: hand;" maxWidth="Infinity"/>
+            <Button fx:id="navMaintenance" text="  Maintenance" onAction="#handleNavMaintenance"
+                    style="-fx-background-color: #1E1E1E; -fx-text-fill: #FFFFFF;
+                           -fx-alignment: CENTER_LEFT; -fx-padding: 12 15; -fx-font-size: 13;
+                           -fx-font-weight: bold; -fx-cursor: hand;
+                           -fx-border-color: transparent transparent transparent #C9A84C;
+                           -fx-border-width: 0 0 0 3;" maxWidth="Infinity"/>
+
             <Region VBox.vgrow="ALWAYS"/>
-            <Button fx:id="btnSignOut" text="Sign Out" onAction="#handleSignOut" style="-fx-background-color: transparent; -fx-text-fill: #9C9C9C; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-font-size: 13; -fx-font-family: 'Inter'; -fx-cursor: hand;"/>
+            <Button fx:id="btnSignOut" text="  Sign Out" onAction="#handleSignOut"
+                    style="-fx-background-color: transparent; -fx-text-fill: #9C9C9C;
+                           -fx-alignment: CENTER_LEFT; -fx-padding: 12 15; -fx-font-size: 13;
+                           -fx-cursor: hand;" maxWidth="Infinity"/>
         </VBox>
     </left>
+
+    <!-- ══════════════════════════════════════════════════ -->
+    <!-- MAIN CONTENT                                       -->
+    <!-- ══════════════════════════════════════════════════ -->
     <center>
-        <VBox fx:id="contentArea" spacing="16" style="-fx-background-color: #FFFFFF; -fx-padding: 30;">
-            <Label fx:id="pageTitle" text="Maintenance Services" style="-fx-font-family: 'Georgia'; -fx-font-size: 26; -fx-font-weight: bold; -fx-text-fill: #0A0A0A; -fx-padding: 0 0 10 0; -fx-border-color: #0A0A0A; -fx-border-width: 0 0 2 0;"/>
-            <HBox spacing="10" alignment="CENTER_LEFT">
-                <TextField fx:id="searchField" promptText="Search requests..." HBox.hgrow="ALWAYS" style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-padding: 8; -fx-text-fill: #0A0A0A; -fx-font-family: 'Inter'; -fx-font-size: 12;"/>
-                <ComboBox fx:id="comboFilterStatus" promptText="Status Filter" prefWidth="180" style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-font-family: 'Inter'; -fx-font-size: 12;"/>
-            </HBox>
-            <TableView fx:id="maintenanceTable" style="-fx-background-color: #FFFFFF; -fx-border-color: #0A0A0A; -fx-border-width: 2; -fx-font-family: 'Inter'; -fx-font-size: 12;" VBox.vgrow="ALWAYS">
-                <columns>
-                    <TableColumn fx:id="colTenant" text="Tenant Name" prefWidth="160"/>
-                    <TableColumn fx:id="colRoom" text="Room" prefWidth="80"/>
-                    <TableColumn fx:id="colDescription" text="Issue Description" prefWidth="300"/>
-                    <TableColumn fx:id="colDateFiled" text="Date Filed" prefWidth="120"/>
-                    <TableColumn fx:id="colStatus" text="Status" prefWidth="100"/>
-                    <TableColumn fx:id="colStaff" text="Assigned Staff" prefWidth="120"/>
-                </columns>
-            </TableView>
-        </VBox>
+        <HBox spacing="20" style="-fx-padding: 30;">
+
+            <!-- LEFT: Request List -->
+            <VBox fx:id="contentArea" spacing="16" HBox.hgrow="ALWAYS">
+                <!-- Header row -->
+                <HBox alignment="CENTER_LEFT" spacing="12">
+                    <Label fx:id="pageTitle" text="Maintenance Requests"
+                           style="-fx-font-family: 'Georgia'; -fx-font-size: 24; -fx-font-weight: bold;
+                                  -fx-text-fill: #0A0A0A;"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button mnemonicParsing="false" onAction="#handleRefresh" text="↻ Refresh"
+                            style="-fx-background-color: #0A0A0A; -fx-text-fill: #FFFFFF;
+                                   -fx-background-radius: 4; -fx-cursor: hand;
+                                   -fx-font-size: 12; -fx-padding: 6 14;"/>
+                </HBox>
+
+                <!-- Filters -->
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <TextField fx:id="searchField" promptText="Search by tenant name, room, or description..."
+                               prefHeight="36" HBox.hgrow="ALWAYS"
+                               style="-fx-background-color: #FFFFFF; -fx-border-color: #D1D5DB;
+                                      -fx-border-width: 1; -fx-border-radius: 4; -fx-padding: 6 10;
+                                      -fx-font-size: 12;"/>
+                    <ComboBox fx:id="comboFilterStatus" prefWidth="170" prefHeight="36"
+                              style="-fx-background-color: #FFFFFF; -fx-border-color: #D1D5DB;
+                                     -fx-border-width: 1; -fx-border-radius: 4; -fx-font-size: 12;"/>
+                </HBox>
+
+                <!-- Table -->
+                <VBox style="-fx-background-color: #FFFFFF; -fx-background-radius: 8;
+                             -fx-border-color: #E2E8F0; -fx-border-width: 1; -fx-border-radius: 8;
+                             -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 8, 0, 0, 2);"
+                      VBox.vgrow="ALWAYS">
+                    <TableView fx:id="maintenanceTable"
+                               style="-fx-background-color: #FFFFFF; -fx-border-color: transparent; -fx-font-size: 12;"
+                               VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colTenant"      text="Tenant"          prefWidth="130"/>
+                            <TableColumn fx:id="colRoom"        text="Room"            prefWidth="70"/>
+                            <TableColumn fx:id="colDescription" text="Issue / Description" prefWidth="250"/>
+                            <TableColumn fx:id="colDateFiled"   text="Date Filed"      prefWidth="140"/>
+                            <TableColumn fx:id="colStatus"      text="Status"          prefWidth="100"/>
+                            <TableColumn fx:id="colStaff"       text="Assigned Staff"  prefWidth="120"/>
+                        </columns>
+                        <placeholder>
+                            <Label text="No maintenance requests found." style="-fx-text-fill: #AAAAAA; -fx-font-size: 13;"/>
+                        </placeholder>
+                    </TableView>
+                </VBox>
+            </VBox>
+
+            <!-- RIGHT: Detail & Update Panel -->
+            <VBox spacing="16" prefWidth="270"
+                  style="-fx-background-color: #FFFFFF; -fx-background-radius: 8;
+                         -fx-border-color: #E2E8F0; -fx-border-width: 1; -fx-border-radius: 8;
+                         -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 8, 0, 0, 2);
+                         -fx-padding: 0;">
+                <HBox style="-fx-background-color: #0A0A0A; -fx-background-radius: 8 8 0 0; -fx-padding: 15 20;">
+                    <Label text="Request Details" textFill="WHITE">
+                        <font><Font name="System Bold" size="14.0"/></font>
+                    </Label>
+                </HBox>
+
+                <VBox spacing="14" style="-fx-padding: 18;">
+                    <Label text="Select a row from the table to view and update its details."
+                           style="-fx-text-fill: #888888; -fx-font-size: 11; -fx-wrap-text: true;"/>
+
+                    <Label text="Tenant" style="-fx-text-fill: #555555; -fx-font-size: 11; -fx-font-weight: bold;"/>
+                    <Label fx:id="lblSelectedTenant" text="—"
+                           style="-fx-text-fill: #0A0A0A; -fx-font-size: 13; -fx-font-weight: bold;"/>
+
+                    <Label text="Room" style="-fx-text-fill: #555555; -fx-font-size: 11; -fx-font-weight: bold;"/>
+                    <Label fx:id="lblSelectedRoom" text="—" style="-fx-text-fill: #0A0A0A; -fx-font-size: 13;"/>
+
+                    <Label text="Issue Type" style="-fx-text-fill: #555555; -fx-font-size: 11; -fx-font-weight: bold;"/>
+                    <Label fx:id="lblSelectedIssue" text="—" style="-fx-text-fill: #0A0A0A; -fx-font-size: 13;"/>
+
+                    <Label text="Description" style="-fx-text-fill: #555555; -fx-font-size: 11; -fx-font-weight: bold;"/>
+                    <Label fx:id="lblSelectedDesc" text="—"
+                           style="-fx-text-fill: #444444; -fx-font-size: 12; -fx-wrap-text: true;"/>
+
+                    <Separator/>
+
+                    <Label text="Update Status" style="-fx-text-fill: #555555; -fx-font-size: 11; -fx-font-weight: bold;"/>
+                    <ComboBox fx:id="comboUpdateStatus" prefWidth="230" prefHeight="36"
+                              promptText="Select new status..."
+                              style="-fx-background-color: #FFFFFF; -fx-border-color: #D1D5DB;
+                                     -fx-border-width: 1; -fx-border-radius: 4; -fx-font-size: 12;"/>
+
+                    <Label text="Assigned Staff" style="-fx-text-fill: #555555; -fx-font-size: 11; -fx-font-weight: bold;"/>
+                    <TextField fx:id="editAssignedStaff" promptText="Enter staff name..."
+                               prefHeight="36"
+                               style="-fx-background-color: #FFFFFF; -fx-border-color: #D1D5DB;
+                                      -fx-border-width: 1; -fx-border-radius: 4; -fx-padding: 6 10;
+                                      -fx-font-size: 12;"/>
+
+                    <Button fx:id="btnUpdateStatus" mnemonicParsing="false"
+                            onAction="#handleUpdateStatus" text="Update Request"
+                            maxWidth="Infinity" prefHeight="38"
+                            style="-fx-background-color: #0A0A0A; -fx-text-fill: #FFFFFF;
+                                   -fx-background-radius: 4; -fx-cursor: hand; -fx-font-size: 13;
+                                   -fx-font-weight: bold;"/>
+
+                    <Label fx:id="lblUpdateResult" text="" visible="false"
+                           style="-fx-font-size: 11; -fx-wrap-text: true;"/>
+                </VBox>
+            </VBox>
+        </HBox>
     </center>
 </BorderPane>

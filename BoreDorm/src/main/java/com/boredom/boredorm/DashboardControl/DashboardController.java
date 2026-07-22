@@ -101,7 +101,9 @@ public class DashboardController implements Initializable {
         lblOccupiedNum.setText("42");
         lblVacantNum.setText("18");
         lblPendingNum.setText("0");
-        lblRequestsNum.setText("5");
+        int pendingMaintenance = DormitoryFacade.getInstance().countPendingMaintenanceRequests();
+        lblRequestsNum.setText(String.valueOf(pendingMaintenance));
+
     }
 
     @FXML private void handleNavDashboard(ActionEvent event) {}
