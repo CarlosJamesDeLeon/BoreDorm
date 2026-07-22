@@ -352,4 +352,4 @@ Use these credentials to test the system:
 * **Password**: `User.123456`
 
 ---
-*Developed as a Capstone Project for Software Engineering and Architecture.*
+*Developed as a Capstone Project for OOP2, practicing the use of core OOP principles.*
