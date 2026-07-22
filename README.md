@@ -10,8 +10,6 @@ The system architecture and behavioral flows are modeled below using standardize
 
 Click **"View Diagram"** under any section to expand and inspect the diagram.
 
-> 💡 **Tip for app.diagrams.net (Draw.io):** You can open [app.diagrams.net](https://app.diagrams.net), click **Arrange > Insert > Advanced > Mermaid**, paste any of the Mermaid code blocks below, and Draw.io will automatically generate clean vector graphics!
-
 ---
 
 ### 1. 📑 Class Diagram (System Architecture & Design Patterns)
