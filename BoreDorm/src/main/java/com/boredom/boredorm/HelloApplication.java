@@ -1,5 +1,6 @@
 package com.boredom.boredorm;
 
+import com.boredom.boredorm.Facade.DormitoryFacade;
 import com.boredom.boredorm.Models.User;
 import com.boredom.boredorm.SessionManaging.SessionManager;
 import javafx.application.Application;
@@ -13,9 +14,9 @@ public class HelloApplication extends Application {
     public void start(Stage stage) throws IOException {
         String initialFxml = "/com/boredom/boredorm/login.fxml";
 
-        // ✅ SERIALIZATION: Use the serialized session file to maintain state on launch
-        if (SessionManager.getInstance().isSessionActive()) {
-            User user = SessionManager.getInstance().loadSession();
+        // ✅ FACADE & SERIALIZATION: Use DormitoryFacade to check active session state on launch
+        if (DormitoryFacade.getInstance().isSessionActive()) {
+            User user = DormitoryFacade.getInstance().getActiveUser();
             if (user != null) {
                 if ("Admin".equalsIgnoreCase(user.getRole())) {
                     initialFxml = "/com/boredom/boredorm/dashboard.fxml";

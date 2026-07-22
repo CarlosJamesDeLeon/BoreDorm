@@ -1,10 +1,8 @@
 package com.boredom.boredorm.LoginControl;
 
+import com.boredom.boredorm.Facade.DormitoryFacade;
 import com.boredom.boredorm.NavigationUtil;
-import com.boredom.boredorm.DAO.UserDAO;
-import com.boredom.boredorm.DAO.UserDAOImpl;
 import com.boredom.boredorm.Models.User;
-import com.boredom.boredorm.SessionManaging.SessionManager;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -29,7 +27,6 @@ public class LoginController {
     @FXML private PasswordField passwordField;
     @FXML private Button signInButton;
 
-    private final UserDAO userDAO = new UserDAOImpl();
     private final List<String> registeredUsernames = new ArrayList<>();
     private final ContextMenu autocompleteMenu = new ContextMenu();
 
@@ -41,7 +38,7 @@ public class LoginController {
             }
 
             try {
-                List<User> users = userDAO.getAllUsers();
+                List<User> users = DormitoryFacade.getInstance().getAllUsers();
                 registeredUsernames.clear();
                 for (User u : users) {
                     if (u.getUsername() != null && !u.getUsername().trim().isEmpty()) {
@@ -123,13 +120,10 @@ public class LoginController {
         inputUsername = inputUsername.trim();
 
         try {
-            User user = userDAO.getUserByUsername(inputUsername);
+            // ✅ STRUCTURAL FACADE: Delegate authentication, password checking & session serialization to DormitoryFacade
+            User user = DormitoryFacade.getInstance().authenticate(inputUsername, inputPassword);
 
-            if (user != null && BCrypt.checkpw(inputPassword, user.getPassword())) {
-                // ✅ SERIALIZATION: Write user object to session.dat file
-                SessionManager.getInstance().saveSession(user);
-                System.out.println("[Login] Session file created for: " + user.getUsername());
-
+            if (user != null) {
                 if ("Admin".equalsIgnoreCase(user.getRole())) {
                     NavigationUtil.navigateTo(event, "/com/boredom/boredorm/dashboard.fxml");
                 } else {

@@ -1,8 +1,8 @@
 package com.boredom.boredorm.TenantDashboardControl;
 
+import com.boredom.boredorm.Facade.DormitoryFacade;
 import com.boredom.boredorm.Models.User;
 import com.boredom.boredorm.NavigationUtil;
-import com.boredom.boredorm.SessionManaging.SessionManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -58,8 +58,8 @@ public class TenantDashboardController {
     }
 
     private void loadTenantData() {
-        // ✅ SERIALIZATION: Load real user info from session.dat
-        User sessionUser = SessionManager.getInstance().loadSession();
+        // ✅ STRUCTURAL FACADE & SERIALIZATION: Load active user from DormitoryFacade
+        User sessionUser = DormitoryFacade.getInstance().getActiveUser();
         if (sessionUser != null) {
             if (usernameLabel != null) usernameLabel.setText(sessionUser.getUsername());
             if (roomLabel != null) roomLabel.setText(
@@ -74,9 +74,8 @@ public class TenantDashboardController {
 
     @FXML
     private void handleLogout(ActionEvent event) {
-        // ✅ SERIALIZATION: Delete session.dat on tenant logout
-        SessionManager.getInstance().clearSession();
-        System.out.println("[TenantDashboard] Session file deleted. User logged out.");
+        // ✅ STRUCTURAL FACADE & SERIALIZATION: Terminate session via DormitoryFacade
+        DormitoryFacade.getInstance().logout();
         NavigationUtil.navigateTo(event, "/com/boredom/boredorm/login.fxml");
     }
 
@@ -87,8 +86,7 @@ public class TenantDashboardController {
     @FXML private void handleNavBilling(ActionEvent event) {}
     @FXML private void handleNavMaintenance(ActionEvent event) {}
     @FXML private void handleSignOut(ActionEvent event) {
-        // ✅ SERIALIZATION: Delete session.dat on sign out
-        SessionManager.getInstance().clearSession();
+        DormitoryFacade.getInstance().logout();
         NavigationUtil.navigateTo(event, "/com/boredom/boredorm/login.fxml");
     }
     @FXML private void handleSaveTenant(ActionEvent event) {}

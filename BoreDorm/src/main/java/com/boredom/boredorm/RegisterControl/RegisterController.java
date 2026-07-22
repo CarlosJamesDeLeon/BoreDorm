@@ -1,8 +1,6 @@
 package com.boredom.boredorm.RegisterControl;
 
-import com.boredom.boredorm.DAO.UserDAO;
-import com.boredom.boredorm.DAO.UserDAOImpl;
-import com.boredom.boredorm.Models.User;
+import com.boredom.boredorm.Facade.DormitoryFacade;
 import com.boredom.boredorm.NavigationUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -28,8 +26,6 @@ public class RegisterController implements Initializable {
     @FXML private Button goToLoginButton;
     @FXML private Label errorLabel;
 
-    private UserDAO userDAO;
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         titleLabel.setId("titleLabel");
@@ -42,8 +38,6 @@ public class RegisterController implements Initializable {
         signUpButton.setId("signUpButton");
         goToLoginButton.setId("goToLoginButton");
         errorLabel.setId("errorLabel");
-
-        userDAO = new UserDAOImpl();
     }
 
     @FXML
@@ -64,11 +58,8 @@ public class RegisterController implements Initializable {
             return;
         }
 
-        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-
-        User newUser = new User(0, username.trim(), hashedPassword, "tenant", "Unassigned", "Pending");
-
-        boolean success = userDAO.createUser(newUser);
+        // ✅ STRUCTURAL FACADE & CREATIONAL FACTORY: Register tenant via DormitoryFacade
+        boolean success = DormitoryFacade.getInstance().registerTenant(username, password);
 
         if (success) {
             hideError();

@@ -4,8 +4,9 @@ import com.boredom.boredorm.DAO.UserDAO;
 import com.boredom.boredorm.DAO.UserDAOImpl;
 import com.boredom.boredorm.Models.TenantProfile;
 import com.boredom.boredorm.Models.ActivityLog; // Make sure to create this model class!
+import com.boredom.boredorm.Facade.DormitoryFacade;
+import com.boredom.boredorm.Strategy.RoleAccessContext;
 import com.boredom.boredorm.NavigationUtil;
-import com.boredom.boredorm.SessionManaging.SessionManager;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -60,13 +61,9 @@ public class DashboardController implements Initializable {
     }
 
     private void applyRoleBasedAccess() {
-        String role = SessionManager.getInstance().getCurrentUserRole();
-
-        if (role != null && !"admin".equalsIgnoreCase(role.trim())) {
-            if (navTenants != null) navTenants.setVisible(false);
-            if (navRooms != null) navRooms.setVisible(false);
-            if (navBilling != null) navBilling.setVisible(false);
-        }
+        // ✅ BEHAVIORAL STRATEGY PATTERN: Apply permissions using RoleAccessContext strategy
+        RoleAccessContext accessContext = DormitoryFacade.getInstance().getRoleAccessContext();
+        accessContext.applyUiPermissions(navTenants, navRooms, navBilling);
     }
 
     private void loadDashboardData() {
@@ -126,9 +123,8 @@ public class DashboardController implements Initializable {
     }
 
     @FXML private void handleSignOut(ActionEvent event) {
-        // ✅ SERIALIZATION: Deletes session.dat file on logout
-        SessionManager.getInstance().clearSession();
-        System.out.println("[Dashboard] Session file deleted. User logged out.");
+        // ✅ STRUCTURAL FACADE & SERIALIZATION: Terminate session via DormitoryFacade
+        DormitoryFacade.getInstance().logout();
         NavigationUtil.navigateTo(event, "/com/boredom/boredorm/login.fxml");
     }
 }

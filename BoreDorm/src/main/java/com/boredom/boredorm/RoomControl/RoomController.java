@@ -6,7 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.event.ActionEvent;
-import com.boredom.boredorm.SessionManaging.SessionManager;
+import com.boredom.boredorm.Facade.DormitoryFacade;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -243,11 +243,7 @@ public class RoomController implements Initializable {
 
     @FXML
     private void handleSignOut(ActionEvent event) {
-        // ✅ SERIALIZATION: Deletes session.dat file on logout
-        SessionManager.getInstance().clearSession();
-        System.out.println("[Room] Session file deleted. User logged out.");
-
-        // Return back to the login screen gateway
+        DormitoryFacade.getInstance().logout();
         NavigationUtil.navigateTo(event, "/com/boredom/boredorm/login.fxml");
     }
 }

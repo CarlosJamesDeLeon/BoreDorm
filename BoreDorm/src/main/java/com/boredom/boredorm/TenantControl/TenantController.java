@@ -1,7 +1,7 @@
 package com.boredom.boredorm.TenantControl;
 
+import com.boredom.boredorm.Facade.DormitoryFacade;
 import com.boredom.boredorm.NavigationUtil;
-import com.boredom.boredorm.SessionManaging.SessionManager;
 import com.boredom.boredorm.DAO.UserDAO;
 import com.boredom.boredorm.DAO.UserDAOImpl;
 import com.boredom.boredorm.Models.User;
@@ -159,9 +159,7 @@ public class TenantController {
     @FXML private void handleNavBilling(ActionEvent event) { NavigationUtil.navigateTo(event, "/com/boredom/boredorm/billing.fxml"); }
     @FXML private void handleNavMaintenance(ActionEvent event) { NavigationUtil.navigateTo(event, "/com/boredom/boredorm/maintenanceRequests.fxml"); }
     @FXML private void handleSignOut(ActionEvent event) {
-        // ✅ SERIALIZATION: Deletes session.dat file on logout
-        SessionManager.getInstance().clearSession();
-        System.out.println("[Tenant] Session file deleted. User logged out.");
+        DormitoryFacade.getInstance().logout();
         NavigationUtil.navigateTo(event, "/com/boredom/boredorm/login.fxml");
     }
 }
