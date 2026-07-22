@@ -6,246 +6,158 @@ BoreDorm is a modern, comprehensive dormitory management software system designe
 
 ## 📊 System UML Diagrams
 
-The system architecture and behavioral flows are modeled below using standardized UML diagrams (Class, Use Case, Activity, and Sequence Diagrams). 
+The system architecture and behavioral flows are modeled below using standardized UML diagrams (Class, Use Case, Activity, and Sequence Diagrams). All diagrams are configured with **straight, orthogonal lines** and structured modular layouts for maximum visual clarity and clean formatting.
 
-> **Tip for app.diagrams.net (Draw.io):** You can also open [app.diagrams.net](https://app.diagrams.net), click **Arrange > Insert > Advanced > Mermaid**, paste any of the Mermaid code blocks below, and Draw.io will automatically render the clean, straight-line diagram for export!
+> **Tip for app.diagrams.net (Draw.io):** You can open [app.diagrams.net](https://app.diagrams.net), click **Arrange > Insert > Advanced > Mermaid**, paste any of the Mermaid code blocks below, and Draw.io will automatically generate perfectly aligned, straight-line vector graphics!
 
-### 1. 📑 Class Diagram (System Structure & Design Patterns)
+### 1. 📑 Class Diagram (System Architecture & Design Patterns)
 
 ```mermaid
-classDiagram
-    direction TB
+%%{init: {'theme': 'dark', 'flowchart': {'curve': 'straight'}, 'class': {'curve': 'straight'}}}%%
+flowchart TD
+    subgraph Tier1["Layer 1: Presentation & Startup Controllers"]
+        HelloApp["HelloApplication"]
+        LoginCtrl["LoginController"]
+        DashCtrl["DashboardController"]
+        TenantDashCtrl["TenantDashboardController"]
+    end
 
-    %% Model Interfaces & Classes
-    class Serializable {
-        <<interface>>
-    }
+    subgraph Tier2["Layer 2: Structural Facade & Strategy Context"]
+        Facade["🏛️ DormitoryFacade<br><i>(Structural Facade)</i>"]
+        StrategyCtx["🎯 RoleAccessContext<br><i>(Behavioral Context)</i>"]
+    end
 
-    class User {
-        -int userId
-        -String username
-        -String password
-        -String role
-        -String roomNumber
-        -String leaseStatus
-        +getUserId() int
-        +getUsername() String
-        +getPassword() String
-        +getRole() String
-        +getRoomNumber() String
-        +getLeaseStatus() String
-    }
-    Serializable <|.. User
+    subgraph Tier3["Layer 3: Behavioral Permission Strategies"]
+        IRoleStrat["<<interface>><br>RoleAccessStrategy"]
+        AdminStrat["AdminAccessStrategy"]
+        TenantStrat["TenantAccessStrategy"]
+    end
 
-    class Tenant {
-        -int tenantId
-        -String firstName
-        -String lastName
-        -String roomNumber
-        -String status
-    }
+    subgraph Tier4["Layer 4: Data Access & Session Management"]
+        ISessionMgr["<<interface>><br>ISessionManager"]
+        SessionMgr["💾 SessionManager<br><i>(Singleton / Serialization)</i>"]
+        IUserDAO["<<interface>><br>UserDAO"]
+        UserDAOImpl["UserDAOImpl"]
+    end
 
-    class ActivityLog {
-        -String tenantName
-        -String actionLogged
-        -String timestamp
-    }
+    subgraph Tier5["Layer 5: Creational Factory & Model Entities"]
+        UserFactory["🏭 UserFactory<br><i>(Creational Factory)</i>"]
+        ISerializable["<<interface>><br>Serializable"]
+        UserModel["User"]
+        TenantModel["Tenant"]
+        ActivityLogModel["ActivityLog"]
+    end
 
-    %% Creational Pattern: Factory
-    class UserFactory {
-        +createTenant(String username, String hashedPassword) User$
-        +createAdmin(String username, String hashedPassword) User$
-        +createUser(int userId, String username, String hashedPassword, String role, String roomNumber, String leaseStatus) User$
-    }
-    UserFactory ..> User : Creates
+    HelloApp ---> Facade
+    LoginCtrl ---> Facade
+    DashCtrl ---> Facade
+    TenantDashCtrl ---> Facade
 
-    %% Session Management & DIP
-    class ISessionManager {
-        <<interface>>
-        +saveSession(User user) void
-        +loadSession() User
-        +isSessionActive() boolean
-        +clearSession() void
-        +getCurrentUserId() int
-        +getCurrentUserRole() String
-        +getCurrentUsername() String
-    }
+    Facade ---> SessionMgr
+    Facade ---> IUserDAO
+    Facade ---> UserFactory
+    Facade ---> StrategyCtx
 
-    class SessionManager {
-        -String SESSION_FILE$
-        -SessionManager instance$
-        +getInstance() SessionManager$
-        +saveSession(User user) void
-        +loadSession() User
-        +isSessionActive() boolean
-        +clearSession() void
-    }
-    ISessionManager <|.. SessionManager
+    StrategyCtx ---> IRoleStrat
+    IRoleStrat <|--- AdminStrat
+    IRoleStrat <|--- TenantStrat
 
-    %% Data Access Object (DAO)
-    class UserDAO {
-        <<interface>>
-        +getUserByUsername(String username) User
-        +createUser(User user) boolean
-        +getAllUsers() List~User~
-        +getAllTenantProfiles() List~TenantProfile~
-    }
+    ISessionMgr <|--- SessionMgr
+    IUserDAO <|--- UserDAOImpl
 
-    class UserDAOImpl {
-        +getUserByUsername(String username) User
-        +createUser(User user) boolean
-        +getAllUsers() List~User~
-        +getAllTenantProfiles() List~TenantProfile~
-    }
-    UserDAO <|.. UserDAOImpl
-
-    %% Behavioral Pattern: Strategy
-    class RoleAccessStrategy {
-        <<interface>>
-        +canAccessAdminFeatures() boolean
-        +canModifyTenants() boolean
-        +getWelcomeMessage(String username) String
-        +applyUiPermissions(Button navTenants, Button navRooms, Button navBilling) void
-    }
-
-    class AdminAccessStrategy {
-        +canAccessAdminFeatures() boolean
-        +canModifyTenants() boolean
-        +getWelcomeMessage(String username) String
-        +applyUiPermissions(Button navTenants, Button navRooms, Button navBilling) void
-    }
-
-    class TenantAccessStrategy {
-        +canAccessAdminFeatures() boolean
-        +canModifyTenants() boolean
-        +getWelcomeMessage(String username) String
-        +applyUiPermissions(Button navTenants, Button navRooms, Button navBilling) void
-    }
-
-    class RoleAccessContext {
-        -RoleAccessStrategy strategy
-        +setRole(String role) void
-        +applyUiPermissions(Button navTenants, Button navRooms, Button navBilling) void
-    }
-    RoleAccessStrategy <|.. AdminAccessStrategy
-    RoleAccessStrategy <|.. TenantAccessStrategy
-    RoleAccessContext o-- RoleAccessStrategy
-
-    %% Structural Pattern: Facade
-    class DormitoryFacade {
-        -DormitoryFacade instance$
-        -UserDAO userDAO
-        +getInstance() DormitoryFacade$
-        +authenticate(String username, String password) User
-        +registerTenant(String username, String rawPassword) boolean
-        +logout() void
-        +isSessionActive() boolean
-        +getActiveUser() User
-        +getRoleAccessContext() RoleAccessContext
-    }
-    DormitoryFacade --> UserDAO
-    DormitoryFacade --> SessionManager
-    DormitoryFacade --> UserFactory
-    DormitoryFacade --> RoleAccessContext
-
-    %% Controllers
-    class LoginController {
-        +handleLogin(ActionEvent event) void
-    }
-
-    class DashboardController {
-        +initialize(URL url, ResourceBundle rb) void
-        +handleSignOut(ActionEvent event) void
-    }
-
-    class HelloApplication {
-        +start(Stage stage) void
-    }
-
-    LoginController --> DormitoryFacade
-    DashboardController --> DormitoryFacade
-    HelloApplication --> DormitoryFacade
+    UserFactory ..-> UserModel
+    ISerializable <|--- UserModel
 ```
 
 ---
 
-### 2. 🎯 Use Case Diagram (System Interactions)
+### 2. 🎯 Use Case Diagram (System Interaction & Boundaries)
 
 ```mermaid
-graph LR
-    subgraph Actors
-        A[Administrator]
-        T[Tenant User]
-        S[BoreDorm System]
+%%{init: {'theme': 'dark', 'flowchart': {'curve': 'straight'}}}%%
+flowchart LR
+    subgraph Actors["👥 System Actors"]
+        direction TB
+        Admin["👨‍💼 Administrator"]
+        Tenant["👤 Tenant User"]
     end
 
-    subgraph BoreDorm System Boundary
-        UC1((UC-1: Authenticate / Log In))
-        UC2((UC-2: Register Account))
-        UC3((UC-3: Serialize session.dat))
-        UC4((UC-4: Manage Rooms & Inventory))
-        UC5((UC-5: Manage Tenants & Leases))
-        UC6((UC-6: Record Billing & Invoices))
-        UC7((UC-7: Review Activity Logs))
-        UC8((UC-8: View Tenant Profile))
-        UC9((UC-9: Log Out & Delete Session))
+    subgraph AuthGroup["🔐 1. Authentication & Session"]
+        direction TB
+        UC1["UC-1: Authenticate / Log In"]
+        UC2["UC-2: Register Account"]
+        UC3["UC-3: Manage session.dat"]
+        UC9["UC-4: Log Out & Terminate"]
     end
 
-    A --> UC1
-    A --> UC2
-    A --> UC4
-    A --> UC5
-    A --> UC6
-    A --> UC7
-    A --> UC9
+    subgraph AdminGroup["🛠️ 2. Administrative Operations"]
+        direction TB
+        UC4["UC-5: Manage Rooms & Availability"]
+        UC5["UC-6: Manage Tenants & Leases"]
+        UC6["UC-7: Record Invoices & Payments"]
+        UC7["UC-8: Audit Activity Logs"]
+    end
 
-    T --> UC1
-    T --> UC2
-    T --> UC8
-    T --> UC9
+    subgraph TenantGroup["📱 3. Tenant Portal"]
+        direction TB
+        UC8["UC-9: View Personal Profile"]
+    end
+
+    Admin ---> UC1
+    Admin ---> UC2
+    Admin ---> UC4
+    Admin ---> UC5
+    Admin ---> UC6
+    Admin ---> UC7
+    Admin ---> UC9
+
+    Tenant ---> UC1
+    Tenant ---> UC2
+    Tenant ---> UC8
+    Tenant ---> UC9
 
     UC1 -.->|Includes| UC3
     UC9 -.->|Deletes| UC3
-    S --> UC3
 ```
 
 ---
 
-### 3. 🔄 Activity Diagram (Session & Authentication Flow)
+### 3. 🔄 Activity Diagram (Authentication & Session Lifecycle)
 
 ```mermaid
+%%{init: {'theme': 'dark', 'flowchart': {'curve': 'straight'}}}%%
 flowchart TD
-    Start([Start Application]) --> AppLaunch[Launch HelloApplication]
-    AppLaunch --> CheckSession{Is session.dat Present?}
+    Start([Start Application]) ---> AppLaunch[Launch HelloApplication]
+    AppLaunch ---> CheckSession{Is session.dat Present?}
 
-    CheckSession -- Yes --> LoadSession[Deserialize session.dat via DormitoryFacade]
-    LoadSession --> CheckRole{User Role?}
-    CheckRole -- Admin --> RouteAdmin[Route to Dashboard.fxml]
-    CheckRole -- Tenant --> RouteTenant[Route to Tenant_Dashboard.fxml]
+    CheckSession --->|Yes| LoadSession[Deserialize session.dat via DormitoryFacade]
+    LoadSession ---> CheckRole{User Role?}
+    CheckRole --->|Admin| RouteAdmin[Route to Dashboard.fxml]
+    CheckRole --->|Tenant| RouteTenant[Route to Tenant_Dashboard.fxml]
 
-    CheckSession -- No --> ShowLogin[Display Login Screen]
-    ShowLogin --> UserInput[User enters Username & Password]
-    UserInput --> SubmitLogin[Click Sign In / Press Enter]
-    SubmitLogin --> AuthFacade[DormitoryFacade.authenticate]
+    CheckSession --->|No| ShowLogin[Display Login Screen]
+    ShowLogin ---> UserInput[User enters Username & Password]
+    UserInput ---> SubmitLogin[Click Sign In / Press Enter]
+    SubmitLogin ---> AuthFacade[DormitoryFacade.authenticate]
     
-    AuthFacade --> FetchDB[Query UserDAO & Validate BCrypt]
-    FetchDB --> Valid{Credentials Valid?}
+    AuthFacade ---> FetchDB[Query UserDAO & Validate BCrypt]
+    FetchDB ---> Valid{Credentials Valid?}
 
-    Valid -- No --> DisplayError[Show Error Alert] --> ShowLogin
-    Valid -- Yes --> SaveSession[Serialize User Object to session.dat]
-    SaveSession --> ResolveStrategy[Initialize RoleAccessContext Strategy]
-    ResolveStrategy --> RouteDashboard[Navigate to Dashboard View]
+    Valid --->|No| DisplayError[Show Error Alert] ---> ShowLogin
+    Valid --->|Yes| SaveSession[Serialize User Object to session.dat]
+    SaveSession ---> ResolveStrategy[Initialize RoleAccessContext Strategy]
+    ResolveStrategy ---> RouteDashboard[Navigate to Dashboard View]
 
-    RouteAdmin --> MainNav[User Interacts with Management Features]
-    RouteTenant --> MainNav
-    RouteDashboard --> MainNav
+    RouteAdmin ---> MainNav[User Interacts with Management Features]
+    RouteTenant ---> MainNav
+    RouteDashboard ---> MainNav
 
-    MainNav --> UserLogout{Click Sign Out?}
-    UserLogout -- No --> MainNav
-    UserLogout -- Yes --> CallLogout[DormitoryFacade.logout]
-    CallLogout --> DeleteFile[Delete session.dat from disk]
-    DeleteFile --> RedirectLogin[Redirect to Login Screen]
-    RedirectLogin --> End([End Session])
+    MainNav ---> UserLogout{Click Sign Out?}
+    UserLogout --->|No| MainNav
+    UserLogout --->|Yes| CallLogout[DormitoryFacade.logout]
+    CallLogout ---> DeleteFile[Delete session.dat from disk]
+    DeleteFile ---> RedirectLogin[Redirect to Login Screen]
+    RedirectLogin ---> End([End Session])
 ```
 
 ---
@@ -352,4 +264,4 @@ Use these credentials to test the system:
 * **Password**: `User.123456`
 
 ---
-*Developed as a Capstone Project for OOP2, practicing the use of core OOP principles.*
+*Developed as a Capstone Project for Software Engineering and Architecture.*
