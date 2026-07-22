@@ -4,6 +4,281 @@ BoreDorm is a modern, comprehensive dormitory management software system designe
 
 ---
 
+## 📊 System UML Diagrams
+
+The system architecture and behavioral flows are modeled below using standardized UML diagrams (Class, Use Case, Activity, and Sequence Diagrams). 
+
+> **Tip for app.diagrams.net (Draw.io):** You can also open [app.diagrams.net](https://app.diagrams.net), click **Arrange > Insert > Advanced > Mermaid**, paste any of the Mermaid code blocks below, and Draw.io will automatically render the clean, straight-line diagram for export!
+
+### 1. 📑 Class Diagram (System Structure & Design Patterns)
+
+```mermaid
+classDiagram
+    direction TB
+
+    %% Model Interfaces & Classes
+    class Serializable {
+        <<interface>>
+    }
+
+    class User {
+        -int userId
+        -String username
+        -String password
+        -String role
+        -String roomNumber
+        -String leaseStatus
+        +getUserId() int
+        +getUsername() String
+        +getPassword() String
+        +getRole() String
+        +getRoomNumber() String
+        +getLeaseStatus() String
+    }
+    Serializable <|.. User
+
+    class Tenant {
+        -int tenantId
+        -String firstName
+        -String lastName
+        -String roomNumber
+        -String status
+    }
+
+    class ActivityLog {
+        -String tenantName
+        -String actionLogged
+        -String timestamp
+    }
+
+    %% Creational Pattern: Factory
+    class UserFactory {
+        +createTenant(String username, String hashedPassword) User$
+        +createAdmin(String username, String hashedPassword) User$
+        +createUser(int userId, String username, String hashedPassword, String role, String roomNumber, String leaseStatus) User$
+    }
+    UserFactory ..> User : Creates
+
+    %% Session Management & DIP
+    class ISessionManager {
+        <<interface>>
+        +saveSession(User user) void
+        +loadSession() User
+        +isSessionActive() boolean
+        +clearSession() void
+        +getCurrentUserId() int
+        +getCurrentUserRole() String
+        +getCurrentUsername() String
+    }
+
+    class SessionManager {
+        -String SESSION_FILE$
+        -SessionManager instance$
+        +getInstance() SessionManager$
+        +saveSession(User user) void
+        +loadSession() User
+        +isSessionActive() boolean
+        +clearSession() void
+    }
+    ISessionManager <|.. SessionManager
+
+    %% Data Access Object (DAO)
+    class UserDAO {
+        <<interface>>
+        +getUserByUsername(String username) User
+        +createUser(User user) boolean
+        +getAllUsers() List~User~
+        +getAllTenantProfiles() List~TenantProfile~
+    }
+
+    class UserDAOImpl {
+        +getUserByUsername(String username) User
+        +createUser(User user) boolean
+        +getAllUsers() List~User~
+        +getAllTenantProfiles() List~TenantProfile~
+    }
+    UserDAO <|.. UserDAOImpl
+
+    %% Behavioral Pattern: Strategy
+    class RoleAccessStrategy {
+        <<interface>>
+        +canAccessAdminFeatures() boolean
+        +canModifyTenants() boolean
+        +getWelcomeMessage(String username) String
+        +applyUiPermissions(Button navTenants, Button navRooms, Button navBilling) void
+    }
+
+    class AdminAccessStrategy {
+        +canAccessAdminFeatures() boolean
+        +canModifyTenants() boolean
+        +getWelcomeMessage(String username) String
+        +applyUiPermissions(Button navTenants, Button navRooms, Button navBilling) void
+    }
+
+    class TenantAccessStrategy {
+        +canAccessAdminFeatures() boolean
+        +canModifyTenants() boolean
+        +getWelcomeMessage(String username) String
+        +applyUiPermissions(Button navTenants, Button navRooms, Button navBilling) void
+    }
+
+    class RoleAccessContext {
+        -RoleAccessStrategy strategy
+        +setRole(String role) void
+        +applyUiPermissions(Button navTenants, Button navRooms, Button navBilling) void
+    }
+    RoleAccessStrategy <|.. AdminAccessStrategy
+    RoleAccessStrategy <|.. TenantAccessStrategy
+    RoleAccessContext o-- RoleAccessStrategy
+
+    %% Structural Pattern: Facade
+    class DormitoryFacade {
+        -DormitoryFacade instance$
+        -UserDAO userDAO
+        +getInstance() DormitoryFacade$
+        +authenticate(String username, String password) User
+        +registerTenant(String username, String rawPassword) boolean
+        +logout() void
+        +isSessionActive() boolean
+        +getActiveUser() User
+        +getRoleAccessContext() RoleAccessContext
+    }
+    DormitoryFacade --> UserDAO
+    DormitoryFacade --> SessionManager
+    DormitoryFacade --> UserFactory
+    DormitoryFacade --> RoleAccessContext
+
+    %% Controllers
+    class LoginController {
+        +handleLogin(ActionEvent event) void
+    }
+
+    class DashboardController {
+        +initialize(URL url, ResourceBundle rb) void
+        +handleSignOut(ActionEvent event) void
+    }
+
+    class HelloApplication {
+        +start(Stage stage) void
+    }
+
+    LoginController --> DormitoryFacade
+    DashboardController --> DormitoryFacade
+    HelloApplication --> DormitoryFacade
+```
+
+---
+
+### 2. 🎯 Use Case Diagram (System Interactions)
+
+```mermaid
+graph LR
+    subgraph Actors
+        A[Administrator]
+        T[Tenant User]
+        S[BoreDorm System]
+    end
+
+    subgraph BoreDorm System Boundary
+        UC1((UC-1: Authenticate / Log In))
+        UC2((UC-2: Register Account))
+        UC3((UC-3: Serialize session.dat))
+        UC4((UC-4: Manage Rooms & Inventory))
+        UC5((UC-5: Manage Tenants & Leases))
+        UC6((UC-6: Record Billing & Invoices))
+        UC7((UC-7: Review Activity Logs))
+        UC8((UC-8: View Tenant Profile))
+        UC9((UC-9: Log Out & Delete Session))
+    end
+
+    A --> UC1
+    A --> UC2
+    A --> UC4
+    A --> UC5
+    A --> UC6
+    A --> UC7
+    A --> UC9
+
+    T --> UC1
+    T --> UC2
+    T --> UC8
+    T --> UC9
+
+    UC1 -.->|Includes| UC3
+    UC9 -.->|Deletes| UC3
+    S --> UC3
+```
+
+---
+
+### 3. 🔄 Activity Diagram (Session & Authentication Flow)
+
+```mermaid
+flowchart TD
+    Start([Start Application]) --> AppLaunch[Launch HelloApplication]
+    AppLaunch --> CheckSession{Is session.dat Present?}
+
+    CheckSession -- Yes --> LoadSession[Deserialize session.dat via DormitoryFacade]
+    LoadSession --> CheckRole{User Role?}
+    CheckRole -- Admin --> RouteAdmin[Route to Dashboard.fxml]
+    CheckRole -- Tenant --> RouteTenant[Route to Tenant_Dashboard.fxml]
+
+    CheckSession -- No --> ShowLogin[Display Login Screen]
+    ShowLogin --> UserInput[User enters Username & Password]
+    UserInput --> SubmitLogin[Click Sign In / Press Enter]
+    SubmitLogin --> AuthFacade[DormitoryFacade.authenticate]
+    
+    AuthFacade --> FetchDB[Query UserDAO & Validate BCrypt]
+    FetchDB --> Valid{Credentials Valid?}
+
+    Valid -- No --> DisplayError[Show Error Alert] --> ShowLogin
+    Valid -- Yes --> SaveSession[Serialize User Object to session.dat]
+    SaveSession --> ResolveStrategy[Initialize RoleAccessContext Strategy]
+    ResolveStrategy --> RouteDashboard[Navigate to Dashboard View]
+
+    RouteAdmin --> MainNav[User Interacts with Management Features]
+    RouteTenant --> MainNav
+    RouteDashboard --> MainNav
+
+    MainNav --> UserLogout{Click Sign Out?}
+    UserLogout -- No --> MainNav
+    UserLogout -- Yes --> CallLogout[DormitoryFacade.logout]
+    CallLogout --> DeleteFile[Delete session.dat from disk]
+    DeleteFile --> RedirectLogin[Redirect to Login Screen]
+    RedirectLogin --> End([End Session])
+```
+
+---
+
+### 4. ⏱️ Sequence Diagram (User Login & Session Creation Flow)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User as User / Admin
+    participant LC as LoginController
+    participant DF as DormitoryFacade
+    participant DAO as UserDAOImpl
+    participant BC as BCrypt
+    participant SM as SessionManager
+    participant NV as NavigationUtil
+
+    User->>LC: Enter Username & Password + Click "Sign In"
+    LC->>DF: authenticate(username, password)
+    DF->>DAO: getUserByUsername(username)
+    DAO-->>DF: Return User Object
+    DF->>BC: checkpw(password, user.getPassword())
+    BC-->>DF: Return true (Valid Password)
+    DF->>SM: saveSession(user)
+    SM->>SM: Serialize user -> write to session.dat
+    SM-->>DF: Session Saved Notification
+    DF-->>LC: Return Authenticated User Object
+    LC->>NV: navigateTo(event, dashboard.fxml)
+    NV-->>User: Display Dashboard View
+```
+
+---
+
 ## 🌟 Major Features
 
 1. **User Authentication & Authorization**: Role-based access control (RBAC) separating Admin and Tenant permissions.
