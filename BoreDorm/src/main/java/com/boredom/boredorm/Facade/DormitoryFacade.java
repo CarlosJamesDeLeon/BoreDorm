@@ -110,6 +110,12 @@ public class DormitoryFacade {
      * Called from TenantDashboardController.
      */
     public boolean submitMaintenanceRequest(MaintenanceRequest request) {
+        if (request.getTenantUserId() <= 0 && request.getTenantUsername() != null) {
+            User dbUser = userDAO.getUserByUsername(request.getTenantUsername());
+            if (dbUser != null) {
+                request.setTenantUserId(dbUser.getUserId());
+            }
+        }
         System.out.println("[DormitoryFacade] Tenant submitting maintenance request: " + request.getDescription());
         return maintenanceDAO.submitRequest(request);
     }
@@ -121,7 +127,14 @@ public class DormitoryFacade {
     public List<MaintenanceRequest> getMyMaintenanceRequests() {
         User user = getActiveUser();
         if (user == null) return List.of();
-        return maintenanceDAO.getRequestsByUserId(user.getUserId());
+        int userId = user.getUserId();
+        if (userId <= 0 && user.getUsername() != null) {
+            User dbUser = userDAO.getUserByUsername(user.getUsername());
+            if (dbUser != null) {
+                userId = dbUser.getUserId();
+            }
+        }
+        return maintenanceDAO.getRequestsByUserId(userId);
     }
 
     /**
